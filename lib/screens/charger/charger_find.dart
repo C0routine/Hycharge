@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hycharge/providers/is_dark_mode.dart';
+
+import 'package:hycharge/providers/dark_theme.dart';
 import 'package:hycharge/utils/location_permission.dart';
 import 'package:hycharge/utils/open_app_setting.dart';
-import 'package:provider/provider.dart';
 
 class ChargerFind extends StatefulWidget {
   const ChargerFind({super.key});
@@ -16,37 +16,14 @@ class ChargerFind extends StatefulWidget {
 class _ChargerFindState extends State<ChargerFind> {
   @override
   Widget build(BuildContext context) {
-    // final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    // print(isDarkMode);
-    // final locationOverlay = await mapController.getLocationOverlay();
-
-    // final darkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    // Provider.of<IsDarkMode>(context).changeMode(darkMode);
-    // print(Provider.of<IsDarkMode>(context).isDarkMode);
-
-    // final darkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
-// print(Provider.of<IsDarkMode>(context).isDarkMode);
-
-    // final darkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    // print(darkMode);
-    // () => context.read<IsDarkMode>().changeMode(darkMode);
-    // print(context.read<IsDarkMode>().isDarkMode);
-    // final darkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    // print('DarkMode : ${darkMode}');
-    // print('DarkMode2 : ${Brightness}');
-
-    // final darks = context.read<IsDarkMode>();
-    // darks.changeMode(darkMode);
-
-    // final value = Provider.of<IsDarkMode>(context, listen: false).changeMode(darkMode);
-
     return Scaffold(
       body: Stack(
+        // alignment: Alignment.center,
         children: [
           NaverMap(
             options: NaverMapViewOptions(
               mapType: NMapType.navi,
-              nightModeEnable: context.read<IsDarkMode>().isDarkMode,
+              nightModeEnable: context.watch<DarkTheme>().isDark,
 
               minZoom: 6,
               scaleBarEnable: false,
@@ -60,14 +37,6 @@ class _ChargerFindState extends State<ChargerFind> {
             onMapReady: (controller) async {
               print("네이버 맵 로딩됨!");
 
-              // Provider.of<IsDarkMode>(context).changeMode(true);
-              // print(Provider.of<IsDarkMode>(context).isDarkMode);
-
-              // final location = await controller.getLocationOverlay();
-              // print('${location}');
-              // controller.setLocationTrackingMode(NLocationTrackingMode.face);
-              // final location = controller.getLocationTrackingMode();
-
               if (await getLocationPermission()) {
                 // 권한 승인시
                 controller.setLocationTrackingMode(NLocationTrackingMode.follow);
@@ -77,35 +46,6 @@ class _ChargerFindState extends State<ChargerFind> {
               }
             },
           ),
-          Positioned(
-            child: Container(
-              color: Colors.red,
-              width: 50.w,
-              height: 50.w,
-            ),
-            top: 100,
-            right: 100,
-          ),
-          Positioned(
-            child: Container(
-              color: Colors.green,
-              width: 50,
-              height: 50,
-            ),
-            top: 200,
-            right: 100,
-          ),
-          // Positioned(
-          //   top: 200,
-          //   child: TextButton(
-          //     onPressed: () {
-          //       bool darkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
-          //       context.read<IsDarkMode>().changeMode(darkMode);
-          //       print(context.read<IsDarkMode>().isDarkMode);
-          //     },
-          //     child: Text('asdfasfecraw3caw3crw3rcw'),
-          //   ),
-          // )
         ],
       ),
     );

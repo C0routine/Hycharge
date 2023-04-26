@@ -5,11 +5,9 @@ final GoRouter router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
-        path: '/',
-        builder: (context, state) => ChargerFind(),
-        routes: [
-
-        ],
+      path: '/',
+      builder: (context, state) => ChargerFind(),
+      routes: [],
     ),
   ],
 );

@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:hycharge/router.dart';
+import 'package:hycharge/style/app_theme.dart';
+import 'package:hycharge/providers/dark_theme.dart';
+
+class HyChargeApp extends StatefulWidget {
+  const HyChargeApp({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _HyChargeApp();
+}
+
+class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+
+    // System Dark & Light Mode Change Listener
+    final window = WidgetsBinding.instance.window;
+    window.onPlatformBrightnessChanged = () {
+      // TODO 추후 Release print Remove or Comments
+      print('Current Theme : ${window.platformBrightness == Brightness.dark ? 'Dark' : 'Light'}');
+
+      // TODO User Custom Theme 를 위해서 User 가 지정한 Theme(내부 저장소) 가 있다면 바꾸지 않도록 분기(if) 필요.
+      context.read<DarkTheme>().changeMode(window.platformBrightness == Brightness.dark);
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      // 디자인 size width, height
+      designSize: const Size(393, 852),
+      // width, height 에 따른 font size
+      minTextAdapt: true,
+      // 분할 화면 지원 여부
+      splitScreenMode: true,
+
+      builder: (context, child) {
+        return MaterialApp.router(
+          // router setting
+          routerConfig: router,
+
+          // App Theme
+          theme: context.watch<DarkTheme>().isDark ? AppTheme.dark() : AppTheme.light(),
+
+          // Debug 모양 가리기
+          debugShowCheckedModeBanner: false,
+
+          builder: (context, child) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child!,
+            );
+          },
+        );
+      },
+    );
+  }
+}
