@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+import 'package:hycharge/style/app_colors.dart';
+
+class AppTheme {
+  /// LightMode Theme
+  static ThemeData light() {
+    return ThemeData(
+      scaffoldBackgroundColor: AppColor.white,
+      brightness: Brightness.light,
+      textTheme: lightTextTheme,
+    );
+  }
+
+  /// DarkMode Theme
+  static ThemeData dark() {
+    return ThemeData(
+      scaffoldBackgroundColor: AppColor.black,
+      brightness: Brightness.dark,
+      textTheme: darkTextTheme,
+    );
+  }
+
+  /// LightMode Text Theme
+  static TextTheme lightTextTheme = const TextTheme(
+    bodyMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: AppColor.black,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: AppColor.black,
+    ),
+  );
+
+  /// DarkMode Text Theme
+  static TextTheme darkTextTheme = TextTheme(
+    bodyMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
+      color: AppColor.white,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: AppColor.white,
+    ),
+  );
+}
