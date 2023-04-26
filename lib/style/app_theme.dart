@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hycharge/style/app_colors.dart';
 
 class AppTheme {
@@ -21,14 +22,14 @@ class AppTheme {
   }
 
   /// LightMode Text Theme
-  static TextTheme lightTextTheme = const TextTheme(
+  static TextTheme lightTextTheme = TextTheme(
     bodyMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 16.sp,
       fontWeight: FontWeight.normal,
       color: AppColor.black,
     ),
     bodySmall: TextStyle(
-      fontSize: 12,
+      fontSize: 12.sp,
       fontWeight: FontWeight.normal,
       color: AppColor.black,
     ),
@@ -37,12 +38,12 @@ class AppTheme {
   /// DarkMode Text Theme
   static TextTheme darkTextTheme = TextTheme(
     bodyMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 16.sp,
       fontWeight: FontWeight.normal,
       color: AppColor.white,
     ),
     bodySmall: TextStyle(
-      fontSize: 12,
+      fontSize: 12.sp,
       fontWeight: FontWeight.normal,
       color: AppColor.white,
     ),
