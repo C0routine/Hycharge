@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hycharge/widgets/charger/custom_navigation_bar.dart';
 import 'package:hycharge/widgets/charger/naver_map_widget.dart';
 
 class ChargerFind extends StatefulWidget {
@@ -16,8 +17,11 @@ class _ChargerFindState extends State<ChargerFind> {
         // alignment: Alignment.center,
         children: [
           NaverMapWidget(),
+          Container(width: 200, height: 200, ),
         ],
       ),
+      extendBody: true,
+      bottomNavigationBar: CustomNavigationBar(),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -36,9 +35,9 @@ class _NaverMapWidget extends State<NaverMapWidget> {
         // 축적 바
         scaleBarEnable: false,
         // naver logo 위치
-        logoAlign: NLogoAlign.rightBottom,
+        logoAlign: NLogoAlign.leftTop,
 
-        locationButtonEnable: true,
+        // locationButtonEnable: true,
 
         // 지도 영역을 한반도 인근으로 제한
         extent: const NLatLngBounds(
