@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/hycharge_app.dart';
+import 'package:hycharge/service/network.dart';
 import 'package:hycharge/providers/dark_theme.dart';
 
 void main() async {
@@ -17,6 +17,9 @@ void main() async {
   await NaverMapSdk.instance.initialize(clientId: dotenv.env['NAVER_MAP_CLIENT_ID']);
   // 가로 모드 제한.
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Singleton Pattern Network Class Dio 를 초기화
+  Network();
 
   runApp(
     // Provider 등록

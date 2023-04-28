@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hycharge/service/api.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -20,6 +21,10 @@ class NaverMapWidget extends StatefulWidget {
 
 class _NaverMapWidget extends State<NaverMapWidget> {
   late NaverMapController mapController;
+
+  Future<void> _getStation() async {
+    await API.hydrogenStation.getStationList();
+  }
 
   Future<void> _setTrackingMode() async {
     if (await getLocationPermission()) {
@@ -82,6 +87,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
             final marker = NMarker(id: 'test', position: const NLatLng(37.35959299999998, 127.10531600000002), icon: iconImage);
             controller.addOverlay(marker);
             _setTrackingMode();
+            // _getStation();
           },
         ),
         Positioned(
@@ -93,7 +99,8 @@ class _NaverMapWidget extends State<NaverMapWidget> {
               color: AppColor.background(isDark),
               borderRadius: BorderRadius.circular(30).w,
               child: InkWell(
-                onTap: () => _setTrackingMode(),
+                // onTap: () => _setTrackingMode(),
+                onTap: () => _getStation(),
                 splashColor: AppColor.enableColor.withOpacity(0.25),
                 highlightColor: AppColor.enableColor.withOpacity(0.25),
                 borderRadius: BorderRadius.circular(30).w,
