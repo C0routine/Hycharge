@@ -8,6 +8,7 @@ import 'package:hycharge/style/app_colors.dart';
 import 'package:hycharge/providers/dark_theme.dart';
 import 'package:hycharge/utils/location_permission.dart';
 import 'package:hycharge/utils/open_app_setting.dart';
+import 'package:hycharge/models/station/hydrogen/station_list.dart';
 
 class NaverMapWidget extends StatefulWidget {
   // navigation bar padding bottom size
@@ -23,7 +24,33 @@ class _NaverMapWidget extends State<NaverMapWidget> {
   late NaverMapController mapController;
 
   Future<void> _getStation() async {
-    await API.hydrogenStation.getStationList();
+    final List<HydrogenStationList> stationList = await API.hydrogenStation.getStationList();
+
+    // 정상적으로 값을 받아왔는지 확인
+    if (stationList.isEmpty) return;
+
+    // TODO 추후 API 서버 개설시 충전소 상태별 icon 분리 필요
+    // final iconImage = await NOverlayImage.fromWidget(
+    //   widget: Icon(
+    //     Icons.local_gas_station,
+    //     color: Colors.blue[300],
+    //     size: 10.w,
+    //   ),
+    //   size: Size(10.w, 10.w),
+    //   context: context,
+    // );
+
+    for (HydrogenStationList station in stationList) {
+      // TODO 현재 Server data 신뢰할 수 없으므로 한번 더 확인, 추후 서버 개설하면 수정 필요
+      if ((station.chrstnMno?.isNotEmpty ?? false) && (station.let?.isNotEmpty ?? false) && (station.lon?.isNotEmpty ?? false)) {
+        final marker = NMarker(id: station.chrstnMno!, position: NLatLng(double.parse(station.let!), double.parse(station.lon!)))
+          ..setOnTapListener((overlay) => {
+                // TODO detail page view & detail api calls
+                print(station.chrstnNm)
+              });
+        mapController.addOverlay(marker);
+      }
+    }
   }
 
   Future<void> _setTrackingMode() async {
@@ -74,18 +101,6 @@ class _NaverMapWidget extends State<NaverMapWidget> {
             print("Naver Map Loading!");
             mapController = controller;
 
-            final iconImage = await NOverlayImage.fromWidget(
-              widget: Icon(
-                Icons.local_gas_station,
-                color: Colors.blue[300],
-                size: 10.w,
-              ),
-              size: Size(10.w, 10.w),
-              context: context,
-            );
-
-            final marker = NMarker(id: 'test', position: const NLatLng(37.35959299999998, 127.10531600000002), icon: iconImage);
-            controller.addOverlay(marker);
             _setTrackingMode();
             // _getStation();
           },
