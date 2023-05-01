@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hycharge/models/station/hydrogen/station_list.dart';
 import 'package:hycharge/service/api.dart';
 import 'package:hycharge/widgets/charger/station_icon.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,6 @@ import 'package:hycharge/style/app_colors.dart';
 import 'package:hycharge/providers/dark_theme.dart';
 import 'package:hycharge/utils/location_permission.dart';
 import 'package:hycharge/utils/open_app_setting.dart';
-import 'package:hycharge/models/station/hydrogen/station_list.dart';
 
 class NaverMapWidget extends StatefulWidget {
   // navigation bar padding bottom size
@@ -24,33 +24,36 @@ class NaverMapWidget extends StatefulWidget {
 class _NaverMapWidget extends State<NaverMapWidget> {
   late NaverMapController mapController;
   late Map<Energy, NOverlayImage> markerIcon;
+  late List<StationList> stationList;
 
   Future<void> _getStation() async {
-    final List<HydrogenStationList> stationList = await API.hydrogenStation.getStationList();
+    stationList = await API.hydrogenStation.getStationList();
 
     // 정상적으로 값을 받아왔는지 확인
     if (stationList.isEmpty) return;
 
-    // TODO 추후 API 서버 개설시 충전소 상태별 icon 분리 필요
-    for (HydrogenStationList station in stationList) {
-      // TODO 현재 Server data 신뢰할 수 없으므로 한번 더 확인, 추후 서버 개설하면 수정 필요
-      if ((station.chrstnMno?.isNotEmpty ?? false) && (station.let?.isNotEmpty ?? false) && (station.lon?.isNotEmpty ?? false)) {
-        final marker = NMarker(
-          id: station.chrstnMno!,
-          position: NLatLng(double.parse(station.let!), double.parse(station.lon!)),
-          caption: const NOverlayCaption(
-            text: '77',
-            color: AppColor.skyBlue,
-            haloColor: AppColor.grey,
-          ),
-          captionAligns: const [NAlign.center],
-          icon: markerIcon[Energy.high],
-        )..setOnTapListener((overlay) => {
-              // TODO detail page view & detail api calls
-              print(station.chrstnNm)
-            });
-        mapController.addOverlay(marker);
-      }
+    for (StationList station in stationList) {
+      int? possibleVehicle = station.possibleVehicle is num ? (station.possibleVehicle! - (station.waitingVehicle ?? 0)) : null;
+
+      final marker = NMarker(
+        id: station.stationId!,
+        position: NLatLng(station.latitude!, station.longitude!),
+        caption: NOverlayCaption(text: '${possibleVehicle ?? '알수없음'}', color: AppColor.skyBlue, haloColor: AppColor.grey),
+        captionAligns: [NAlign.center],
+        icon: markerIcon[possibleVehicle == null
+            ? Energy.zero
+            : possibleVehicle == 0
+                ? Energy.zero
+                : possibleVehicle < 10
+                    ? Energy.low
+                    : possibleVehicle < 25
+                        ? Energy.middle
+                        : Energy.high],
+      )..setOnTapListener((overlay) => {
+            // TODO detail page view
+            print(station.name)
+          });
+      mapController.addOverlay(marker);
     }
   }
 

@@ -7,20 +7,19 @@ class StationInfo {
   String? cmptYn;
   String? chrstnTyCd;
   String? chrstnTyNm;
-  String? echrgeqpTyCd;
-  String? echrgeqpTyNm;
-  String? chrgrTyCd;
-  String? chrgrTyNm;
   String? chrstnTyRm;
   String? spldmdMnMthdCd;
   String? spldmdMnMthdNm;
-  String? eventCn;
+  String? echrgeqpTyCd;
+  String? echrgeqpTyNm;
   String? vhcleKndCd;
   String? vhcleKndNm;
   int? ntslPc;
   String? setleMthdCd;
   String? setleMthdNm;
   String? usePosblDotw;
+  String? usebhrHrMon;
+  String? useehrHrMon;
   String? usebhrHrTues;
   String? useehrHrTues;
   String? usebhrHrWed;
@@ -40,57 +39,76 @@ class StationInfo {
   String? rsvtPosblYn;
   String? lon;
   String? let;
-  String? operYn;
-  String? delAt;
   String? lastMdfcnDt;
   String? timestamp;
 
-  StationInfo(
-      {this.chrstnMno,
-      this.chrstnNm,
-      this.chrstnCttpc,
-      this.roadNmAddr,
-      this.lotnoAddr,
-      this.cmptYn,
-      this.chrstnTyCd,
-      this.chrstnTyNm,
-      this.echrgeqpTyCd,
-      this.echrgeqpTyNm,
-      this.chrgrTyCd,
-      this.chrgrTyNm,
-      this.chrstnTyRm,
-      this.spldmdMnMthdCd,
-      this.spldmdMnMthdNm,
-      this.eventCn,
-      this.vhcleKndCd,
-      this.vhcleKndNm,
-      this.ntslPc,
-      this.setleMthdCd,
-      this.setleMthdNm,
-      this.usePosblDotw,
-      this.usebhrHrTues,
-      this.useehrHrTues,
-      this.usebhrHrWed,
-      this.useehrHrWed,
-      this.usebhrHrThur,
-      this.useehrHrThur,
-      this.usebhrHrFri,
-      this.useehrHrFri,
-      this.usebhrHrSat,
-      this.useehrHrSat,
-      this.usebhrHrSun,
-      this.useehrHrSun,
-      this.usebhrHrHldy,
-      this.useehrHrHldy,
-      this.restBgngHr,
-      this.restEndHr,
-      this.rsvtPosblYn,
-      this.lon,
-      this.let,
-      this.operYn,
-      this.delAt,
-      this.lastMdfcnDt,
-      this.timestamp});
+  // 정의 되어있지 않은 api
+  /// 충전소 수급방식 코드인것 같음
+  String? chrgrTyCd;
+
+  /// 충전기 압력 수치 같음
+  String? chrgrTyNm;
+
+  /// 기타 안내사항 같음
+  String? eventCn;
+
+  // 의미를 모르겠음
+  String? operYn;
+
+  // 의미를 모르겠음
+  String? delAt;
+
+  StationInfo({
+    this.chrstnMno,
+    this.chrstnNm,
+    this.chrstnCttpc,
+    this.roadNmAddr,
+    this.lotnoAddr,
+    this.cmptYn,
+    this.chrstnTyCd,
+    this.chrstnTyNm,
+    this.chrstnTyRm,
+    this.spldmdMnMthdCd,
+    this.spldmdMnMthdNm,
+    this.echrgeqpTyCd,
+    this.echrgeqpTyNm,
+    this.vhcleKndCd,
+    this.vhcleKndNm,
+    this.ntslPc,
+    this.setleMthdCd,
+    this.setleMthdNm,
+    this.usePosblDotw,
+    this.usebhrHrMon,
+    this.useehrHrMon,
+    this.usebhrHrTues,
+    this.useehrHrTues,
+    this.usebhrHrWed,
+    this.useehrHrWed,
+    this.usebhrHrThur,
+    this.useehrHrThur,
+    this.usebhrHrFri,
+    this.useehrHrFri,
+    this.usebhrHrSat,
+    this.useehrHrSat,
+    this.usebhrHrSun,
+    this.useehrHrSun,
+    this.usebhrHrHldy,
+    this.useehrHrHldy,
+    this.restBgngHr,
+    this.restEndHr,
+    this.rsvtPosblYn,
+    this.lon,
+    this.let,
+    this.lastMdfcnDt,
+    this.timestamp,
+
+    // 정의 되어있지 않은 api
+    this.chrgrTyCd,
+    this.chrgrTyNm,
+    this.eventCn,
+    this.operYn,
+    this.delAt,
+  });
 
   StationInfo.fromJson(Map<String, dynamic> json) {
     chrstnMno = json['chrstn_mno'];
@@ -101,20 +119,19 @@ class StationInfo {
     cmptYn = json['cmpt_yn'];
     chrstnTyCd = json['chrstn_ty_cd'];
     chrstnTyNm = json['chrstn_ty_nm'];
-    echrgeqpTyCd = json['echrgeqp_ty_cd'];
-    echrgeqpTyNm = json['echrgeqp_ty_nm'];
-    chrgrTyCd = json['chrgr_ty_cd'];
-    chrgrTyNm = json['chrgr_ty_nm'];
     chrstnTyRm = json['chrstn_ty_rm'];
     spldmdMnMthdCd = json['spldmd_mn_mthd_cd'];
     spldmdMnMthdNm = json['spldmd_mn_mthd_nm'];
-    eventCn = json['event_cn'];
+    echrgeqpTyCd = json['echrgeqp_ty_cd'];
+    echrgeqpTyNm = json['echrgeqp_ty_nm'];
     vhcleKndCd = json['vhcle_knd_cd'];
     vhcleKndNm = json['vhcle_knd_nm'];
     ntslPc = json['ntsl_pc'];
     setleMthdCd = json['setle_mthd_cd'];
     setleMthdNm = json['setle_mthd_nm'];
     usePosblDotw = json['use_posbl_dotw'];
+    usebhrHrMon = json['usebhr_hr_mon'];
+    useehrHrMon = json['useehr_hr_mon'];
     usebhrHrTues = json['usebhr_hr_tues'];
     useehrHrTues = json['useehr_hr_tues'];
     usebhrHrWed = json['usebhr_hr_wed'];
@@ -134,17 +151,14 @@ class StationInfo {
     rsvtPosblYn = json['rsvt_posbl_yn'];
     lon = json['lon'];
     let = json['let'];
-    operYn = json['oper_yn'];
-    delAt = json['del_at'];
     lastMdfcnDt = json['last_mdfcn_dt'];
     timestamp = json['timestamp'];
-  }
 
-  // TODO 추후 API 직접 만들게 되면 인자값 필요할 수 있음, 그 전까지는 deprecated
-  @Deprecated('request 일때 인자값이 아직 필요하지 않음')
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['chrstn_mno'] = chrstnMno;
-    return data;
+    // 정의 되어있지 않은 api
+    chrgrTyCd = json['chrgr_ty_cd'];
+    chrgrTyNm = json['chrgr_ty_nm'];
+    eventCn = json['event_cn'];
+    operYn = json['oper_yn'];
+    delAt = json['del_at'];
   }
 }
