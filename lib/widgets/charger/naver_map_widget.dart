@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hycharge/service/api.dart';
+import 'package:hycharge/widgets/charger/station_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -22,6 +23,7 @@ class NaverMapWidget extends StatefulWidget {
 
 class _NaverMapWidget extends State<NaverMapWidget> {
   late NaverMapController mapController;
+  late Map<Energy, NOverlayImage> markerIcon;
 
   Future<void> _getStation() async {
     final List<HydrogenStationList> stationList = await API.hydrogenStation.getStationList();
@@ -30,28 +32,30 @@ class _NaverMapWidget extends State<NaverMapWidget> {
     if (stationList.isEmpty) return;
 
     // TODO 추후 API 서버 개설시 충전소 상태별 icon 분리 필요
-    // final iconImage = await NOverlayImage.fromWidget(
-    //   widget: Icon(
-    //     Icons.local_gas_station,
-    //     color: Colors.blue[300],
-    //     size: 10.w,
-    //   ),
-    //   size: Size(10.w, 10.w),
-    //   context: context,
-    // );
-
     for (HydrogenStationList station in stationList) {
       // TODO 현재 Server data 신뢰할 수 없으므로 한번 더 확인, 추후 서버 개설하면 수정 필요
       if ((station.chrstnMno?.isNotEmpty ?? false) && (station.let?.isNotEmpty ?? false) && (station.lon?.isNotEmpty ?? false)) {
-        final marker = NMarker(id: station.chrstnMno!, position: NLatLng(double.parse(station.let!), double.parse(station.lon!)))
-          ..setOnTapListener((overlay) => {
-                // TODO detail page view & detail api calls
-                print(station.chrstnNm)
-              });
+        final marker = NMarker(
+          id: station.chrstnMno!,
+          position: NLatLng(double.parse(station.let!), double.parse(station.lon!)),
+          caption: const NOverlayCaption(
+            text: '77',
+            color: AppColor.skyBlue,
+            haloColor: AppColor.grey,
+          ),
+          captionAligns: const [NAlign.center],
+          icon: markerIcon[Energy.high],
+        )..setOnTapListener((overlay) => {
+              // TODO detail page view & detail api calls
+              print(station.chrstnNm)
+            });
         mapController.addOverlay(marker);
       }
     }
   }
+
+  Future<NOverlayImage> _setMarkerIcon(energy) =>
+      NOverlayImage.fromWidget(widget: StationIcon(energy: energy), size: Size(15.w, 9.w), context: context);
 
   Future<void> _setTrackingMode() async {
     if (await getLocationPermission()) {
@@ -98,11 +102,18 @@ class _NaverMapWidget extends State<NaverMapWidget> {
             ),
           ),
           onMapReady: (controller) async {
-            print("Naver Map Loading!");
+            // NaverMap Controller Backup
             mapController = controller;
+            // Marker Icon Load
+            markerIcon = {
+              Energy.high: await _setMarkerIcon(Energy.high),
+              Energy.middle: await _setMarkerIcon(Energy.middle),
+              Energy.low: await _setMarkerIcon(Energy.low),
+              Energy.zero: await _setMarkerIcon(Energy.zero),
+            };
 
             _setTrackingMode();
-            // _getStation();
+            _getStation();
           },
         ),
         Positioned(

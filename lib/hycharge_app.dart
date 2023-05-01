@@ -41,6 +41,9 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
 
       builder: (context, child) {
         return MaterialApp.router(
+          // Performance Overlay
+          // showPerformanceOverlay: true,
+
           // router setting
           routerConfig: router,
 
