@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hycharge/style/app_colors.dart';
 
@@ -20,11 +20,11 @@ class StationIcon extends StatelessWidget {
         border: Border.all(color: AppColor.white, width: 1.w),
         borderRadius: BorderRadius.all(Radius.circular(8.w)),
         color: energy == Energy.high
-            ? AppColor.blue
+            ? AppColor.high
             : energy == Energy.middle
-                ? AppColor.orange
+                ? AppColor.middle
                 : energy == Energy.low
-                    ? AppColor.red
+                    ? AppColor.low
                     : AppColor.grey,
       ),
     );

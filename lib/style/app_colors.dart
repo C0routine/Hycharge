@@ -4,24 +4,36 @@ import 'package:flutter/material.dart';
 /// 앱에서 사용하는 Color 정의
 class AppColor {
   // App 에서 사용하는 모든 Color 정의.
-  static const Color white = Colors.white;
   static const Color black = Color.fromRGBO(32, 32, 32, 1);
-  static const Color blue = Color.fromRGBO(131, 167, 252, 1);
   static const Color grey = Color.fromRGBO(96, 96, 96, 1);
 
-  // middle energe
-  static const Color skyBlue = Color.fromRGBO(136, 192, 225, 1);
-  static const Color orange = Color.fromRGBO(249, 187, 94, 1);
-  static const Color red = Color.fromRGBO(236, 113, 113, 1);
-
   // 각 상황에 맞는 Color 정의, [isDark] 를 통해서 dark, light 모드 확인 후 각 모드에 맞는 Color return.
+
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color blue = Color(0xFF83A7FC);
+  static const Color lightBlue = Color(0xFFE1E9FF);
+  static const Color green = Color(0xFF9BDFA5);
+  static const Color orange = Color(0xFFFCBE61);
+  static const Color red = Color(0xFFFA8080);
 
   /// background Color
   static Color background(bool isDark) => isDark ? black : white;
 
-  /// disable 비활성화 상태일때 Color
+  /// Text Color
+  static Color text(bool isDark) => isDark ? white : black;
+
+  /// disable status Color
   static Color disableColor = grey;
 
-  /// enable 활성화 상태일때 Color
+  /// enable status Color
   static Color enableColor = blue;
+
+  /// marker high energy status color
+  static Color high = green;
+
+  /// marker middle energy status color
+  static Color middle = orange;
+
+  /// marker low energy status color
+  static Color low = red;
 }

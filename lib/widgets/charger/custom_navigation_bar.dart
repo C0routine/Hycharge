@@ -23,9 +23,8 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.read<DarkTheme>().isDark;
+    final isDark = context.watch<DarkTheme>().isDark;
     final bottom = MediaQuery.of(context).viewPadding.bottom;
-    print('change');
 
     return Container(
       height: 55.w,

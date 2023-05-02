@@ -40,7 +40,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
       final marker = NMarker(
         id: station.stationId!,
         position: NLatLng(station.latitude!, station.longitude!),
-        caption: NOverlayCaption(text: '${possibleVehicle ?? '알수없음'}', color: AppColor.skyBlue, haloColor: AppColor.grey),
+        caption: NOverlayCaption(text: '${possibleVehicle ?? '알수없음'}', color: AppColor.white, haloColor: AppColor.grey),
         captionAligns: [NAlign.center],
         icon: markerIcon[possibleVehicle == null
             ? Energy.zero
@@ -80,6 +80,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
       if (location.latitude != 0.0 || location.longitude != 0.0) {
         final camera = await mapController.getCameraPosition();
 
+        // Camera Animation Move 설정
         await mapController.updateCamera(NCameraUpdate.scrollAndZoomTo(
           target: NLatLng(location.latitude, location.longitude),
           zoom: camera.zoom < 16 ? 16 : camera.zoom,
@@ -101,8 +102,8 @@ class _NaverMapWidget extends State<NaverMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context.read<DarkTheme>().isDark;
-    print('NaverMap Render!');
+    final bool isDark = context.watch<DarkTheme>().isDark;
+
     return Stack(
       alignment: Alignment.center,
       children: [
