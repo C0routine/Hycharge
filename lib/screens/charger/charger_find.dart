@@ -13,6 +13,7 @@ class _ChargerFindState extends State<ChargerFind> {
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewPadding.bottom;
+    print(bottom);
 
     return Scaffold(
       body: NaverMapWidget(bottom: bottom),

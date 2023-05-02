@@ -5,6 +5,7 @@ import 'package:hycharge/style/app_colors.dart';
 /// MarkerIcon 을 구별하기 위한 값
 enum Energy { high, middle, low, zero }
 
+/// Station Marker Widget
 class StationIcon extends StatelessWidget {
   const StationIcon({super.key, required this.energy});
 

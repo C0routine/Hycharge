@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hycharge/models/station/hydrogen/station_list.dart';
-import 'package:hycharge/service/api.dart';
-import 'package:hycharge/widgets/charger/station_icon.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:hycharge/service/api.dart';
 import 'package:hycharge/style/app_colors.dart';
 import 'package:hycharge/providers/dark_theme.dart';
-import 'package:hycharge/utils/location_permission.dart';
 import 'package:hycharge/utils/open_app_setting.dart';
+import 'package:hycharge/utils/location_permission.dart';
+import 'package:hycharge/widgets/charger/station_icon.dart';
+import 'package:hycharge/models/station/hydrogen/station_list.dart';
 
 class NaverMapWidget extends StatefulWidget {
   // navigation bar padding bottom size
@@ -35,6 +35,8 @@ class _NaverMapWidget extends State<NaverMapWidget> {
     for (StationList station in stationList) {
       int? possibleVehicle = station.possibleVehicle is num ? (station.possibleVehicle! - (station.waitingVehicle ?? 0)) : null;
 
+      // TODO 특정 값마다 분리하는게 좋을듯하다
+
       final marker = NMarker(
         id: station.stationId!,
         position: NLatLng(station.latitude!, station.longitude!),
@@ -49,32 +51,58 @@ class _NaverMapWidget extends State<NaverMapWidget> {
                     : possibleVehicle < 25
                         ? Energy.middle
                         : Energy.high],
-      )..setOnTapListener((overlay) => {
+      )..setOnTapListener((coverlay) => {
             // TODO detail page view
-            print(station.name)
+            print(station.name),
+            mapController.updateCamera(NCameraUpdate.scrollAndZoomTo(target: NLatLng(station.latitude!, station.longitude!), zoom: 14))
           });
+
       mapController.addOverlay(marker);
+
+      marker
+        ..setMinZoom(7)
+        ..setIsMinZoomInclusive(false);
+      // ..setIsMaxZoomInclusive(true);
     }
+    setState(() {});
   }
 
-  Future<NOverlayImage> _setMarkerIcon(energy) =>
-      NOverlayImage.fromWidget(widget: StationIcon(energy: energy), size: Size(15.w, 9.w), context: context);
-
+  /// 실시간 위치 추적 (Smooth Animation Apply)
   Future<void> _setTrackingMode() async {
     if (await getLocationPermission()) {
       // 권한 승인시
+
+      // 실시간 locationOverlay 위치 값 가져오기
+      final locationOverlay = await mapController.getLocationOverlay();
+      final location = await locationOverlay.getPosition();
+
+      // 실시간 위치 활성화 상태라면, 실시간 위치로 animation 이동
+      if (location.latitude != 0.0 || location.longitude != 0.0) {
+        final camera = await mapController.getCameraPosition();
+
+        await mapController.updateCamera(NCameraUpdate.scrollAndZoomTo(
+          target: NLatLng(location.latitude, location.longitude),
+          zoom: camera.zoom < 16 ? 16 : camera.zoom,
+        )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 900)));
+      }
+
+      // 실시간 위치 활성화
       await mapController.setLocationTrackingMode(NLocationTrackingMode.follow);
     } else {
-      // 권한 거부시 설정 이동 필요
+      // TODO 설정 이동 안내 필요
+      // 권한 거부시 설정 이동
       openAppSetting();
     }
   }
 
+  /// Station Marker Widget Create
+  Future<NOverlayImage> _setMarkerIcon(energy) =>
+      NOverlayImage.fromWidget(widget: StationIcon(energy: energy), size: Size(15.w, 9.w), context: context);
+
   @override
   Widget build(BuildContext context) {
     final bool isDark = context.read<DarkTheme>().isDark;
-
-    print('rerender');
+    print('NaverMap Render!');
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -86,6 +114,8 @@ class _NaverMapWidget extends State<NaverMapWidget> {
             activeLayerGroups: [NLayerGroup.traffic, NLayerGroup.building],
             // night Mode, navi type 만 지원
             nightModeEnable: isDark,
+            // Camera 위치 초기 설정 (서울특별시 시청)
+            initialCameraPosition: const NCameraPosition(target: NLatLng(37.5666102, 126.9783881), zoom: 16),
 
             // 최소 zoom
             minZoom: 6,
@@ -115,7 +145,9 @@ class _NaverMapWidget extends State<NaverMapWidget> {
               Energy.zero: await _setMarkerIcon(Energy.zero),
             };
 
+            // 실시간 위치 활성화
             _setTrackingMode();
+            // Station Marker 활성화
             _getStation();
           },
         ),
@@ -128,8 +160,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
               color: AppColor.background(isDark),
               borderRadius: BorderRadius.circular(30).w,
               child: InkWell(
-                // onTap: () => _setTrackingMode(),
-                onTap: () => _getStation(),
+                onTap: () => _setTrackingMode(),
                 splashColor: AppColor.enableColor.withOpacity(0.25),
                 highlightColor: AppColor.enableColor.withOpacity(0.25),
                 borderRadius: BorderRadius.circular(30).w,

@@ -5,7 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 /// 권한을 성공벅으로 부여되었다면 return true
 Future<bool> getLocationPermission() async {
   final locationStatus = await Permission.location.status;
-  print('current Location Status : ${locationStatus.isGranted}');
+  // print('Current Location Status : ${locationStatus.isGranted}');
 
   // 위치 권한 success 일시
   if (locationStatus.isGranted) {
