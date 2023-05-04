@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-//TODO singleton 필요
 /// 앱에서 사용하는 Color 정의
 class AppColor {
   // App 에서 사용하는 모든 Color 정의.

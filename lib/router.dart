@@ -1,12 +1,13 @@
 import 'package:go_router/go_router.dart';
-import 'package:hycharge/screens/charger/charger_find.dart';
+
+import 'package:hycharge/view/screens/station/station_map.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const ChargerFind(),
+      builder: (context, state) => const StationMap(),
       routes: [],
     ),
   ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:hycharge/providers/dark_theme.dart';
+import 'package:hycharge/view_model/app/dark_theme.dart';
 
 /// 추후 User Custom Theme 지원을 위한 버튼, 일단 System Theme 를 따라가는게 좋아보임.
 class ThemeChangeButton extends StatefulWidget {
@@ -25,7 +25,7 @@ class _ThemeChangeButton extends State<ThemeChangeButton> {
             context.read<DarkTheme>().changeMode(!isDarkMode);
             // TODO 바꾼 모드에 대해서 내부 저장소에 저장이 필요.
           },
-          child: isDarkMode ? Icon(Icons.dark_mode) : Icon(Icons.light_mode),
+          child: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
         ),
       ),
     );

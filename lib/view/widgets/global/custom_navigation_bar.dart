@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import 'package:hycharge/providers/dark_theme.dart';
-import 'package:hycharge/style/app_colors.dart';
+import 'package:hycharge/view_model/app/app_colors.dart';
+import 'package:hycharge/view_model/app/dark_theme.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({super.key});

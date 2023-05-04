@@ -1,4 +1,4 @@
-class StationList {
+class StationData {
   /// 충전소 관리번호
   String? stationId;
 
@@ -177,7 +177,7 @@ class StationList {
   /// 운영 상태 갱신 일자, 실시간 운영정보업데이트(POS) 또는 충전원이 운영정보 업데이트 일자임
   String? statusUpdateTimeStamp;
 
-  StationList({
+  StationData({
     this.stationId,
     this.name,
     this.number,
@@ -239,7 +239,7 @@ class StationList {
     this.statusUpdateTimeStamp,
   });
 
-  StationList.fromJson(Map<String, dynamic> json) {
+  StationData.fromJson(Map<String, dynamic> json) {
     stationId = json['chrstn_mno'];
     name = json['chrstn_nm'];
     number = json['chrstn_cttpc'];

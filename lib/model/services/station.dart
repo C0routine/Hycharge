@@ -1,12 +1,12 @@
-import 'package:hycharge/service/network.dart';
-import 'package:hycharge/models/station/hydrogen/station_list.dart';
-import 'package:hycharge/models/station/hydrogen/station_info.dart';
-import 'package:hycharge/models/station/hydrogen/station_detail.dart';
+import 'package:hycharge/model/services/network.dart';
+import 'package:hycharge/model/station/station_info.dart';
+import 'package:hycharge/model/station/station_detail.dart';
+import 'package:hycharge/model/station/station_data.dart';
 
 /// (Hydrogen) 수소 충전소 관련 API 정의
-class HydrogenStation {
+class Station {
   /// 충전소 운영 정보 List
-  Future getStationInfo() async {
+  Future<List<StationInfo>> getStationInfo() async {
     final response = await Network.dio.get('/chrstnList/operationInfo');
 
     List<StationInfo> stationList = [];
@@ -16,7 +16,7 @@ class HydrogenStation {
   }
 
   /// 충전소 실시간 정보
-  Future getStationDetails() async {
+  Future<List<StationDetail>> getStationDetails() async {
     final response = await Network.dio.get('/chrstnList/currentInfo');
 
     List<StationDetail> stationList = [];
@@ -26,17 +26,21 @@ class HydrogenStation {
   }
 
   /// 충전소 정보 통합 List
-  Future getStationList() async {
+  Future<List<StationData>> getStationList() async {
     final infoResponse = await Network.dio.get('/chrstnList/operationInfo');
     final detailsResponse = await Network.dio.get('/chrstnList/currentInfo');
 
-    List<StationList> infoList = [];
-    infoResponse.data.forEach((info) => infoList.add(StationList.fromJson(info)));
-    List<StationList> detailList = [];
-    detailsResponse.data.forEach((detail) => detailList.add(StationList.fromJson(detail)));
+    // 충전소 정보
+    List<StationData> infoList = [];
+    infoResponse.data.forEach((info) => infoList.add(StationData.fromJson(info)));
+    // 충전소 실시간 정보
+    List<StationData> detailList = [];
+    detailsResponse.data.forEach((detail) => detailList.add(StationData.fromJson(detail)));
 
-    List<StationList> stationList = [];
-    List<StationList> emptyDetailsList = [];
+    // 통합한 충전소 정보
+    List<StationData> stationList = [];
+    // 실시간 정보(상세 정보) 값이 없는 station
+    List<StationData> emptyDetailsList = [];
 
     // 동기화 되지 않는 데이터 목록 필터링
     for (int info = 0; info < infoList.length - 1; info++) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import 'package:hycharge/router.dart';
-import 'package:hycharge/style/app_theme.dart';
-import 'package:hycharge/providers/dark_theme.dart';
+import 'package:hycharge/view_model/app/app_theme.dart';
+import 'package:hycharge/view_model/app/dark_theme.dart';
 
 class HyChargeApp extends StatefulWidget {
   const HyChargeApp({super.key});
@@ -22,7 +22,7 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
     final window = WidgetsBinding.instance.window;
     window.onPlatformBrightnessChanged = () {
       // TODO 추후 Release print Remove or Comments
-      print('Current Theme : ${window.platformBrightness == Brightness.dark ? 'Dark' : 'Light'}');
+      print('Theme Change : ${window.platformBrightness == Brightness.dark ? 'Dark' : 'Light'}');
 
       // TODO User Custom Theme 를 위해서 User 가 지정한 Theme(내부 저장소) 가 있다면 바꾸지 않도록 분기(if) 필요.
       context.read<DarkTheme>().changeMode(window.platformBrightness == Brightness.dark);
