@@ -22,17 +22,17 @@ class AppColor {
   static Color text(bool isDark) => isDark ? white : black;
 
   /// disable status Color
-  static Color disableColor = grey;
+  static const Color disableColor = grey;
 
   /// enable status Color
-  static Color enableColor = blue;
+  static const Color enableColor = blue;
 
   /// marker high energy status color
-  static Color high = green;
+  static const Color high = green;
 
   /// marker middle energy status color
-  static Color middle = orange;
+  static const Color middle = orange;
 
   /// marker low energy status color
-  static Color low = red;
+  static const Color low = red;
 }

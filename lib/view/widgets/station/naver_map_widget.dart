@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:hycharge/model/station/region_data.dart';
 import 'package:hycharge/model/station/station_data.dart';
+import 'package:hycharge/view/widgets/station/marker_region.dart';
 import 'package:hycharge/view/widgets/station/marker_station.dart';
 import 'package:hycharge/view_model/app/app_colors.dart';
 import 'package:hycharge/view_model/app/dark_theme.dart';
@@ -28,26 +29,30 @@ class _NaverMapWidget extends State<NaverMapWidget> {
 
     /// Region Marker Setting
     Future<void> setRegionMarker() async {
+      final markerIcon = await NOverlayImage.fromWidget(widget: const MarkerRegion(), size: Size(18.w, 18.w), context: context);
+
       for (RegionData r in viewModel.regionList) {
         NMarker regionMarker = NMarker(
-          id: r.fullName,
-          position: r.nLatLng,
-          caption: NOverlayCaption(text: r.name, color: AppColor.white, haloColor: AppColor.grey),
-          captionAligns: [NAlign.center],
-          icon: await NOverlayImage.fromWidget(widget: const FlutterLogo(), size: const Size(20, 20), context: context),
-        )..setOnTapListener((overlay) => {
-              print(r.fullName),
-              viewModel.mapController.updateCamera(
-                NCameraUpdate.scrollAndZoomTo(
-                  target: r.nLatLng,
-                  zoom: 7.5,
-                )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 900)),
-              ),
-            });
+            id: r.fullName,
+            position: r.nLatLng,
+            caption: NOverlayCaption(text: r.name, color: AppColor.white, haloColor: AppColor.grey),
+            captionAligns: [NAlign.center],
+            icon: markerIcon)
+          ..setOnTapListener((overlay) => {
+                print(r.fullName),
+                viewModel.mapController.updateCamera(
+                  NCameraUpdate.scrollAndZoomTo(
+                    target: r.nLatLng,
+                    zoom: 7.5,
+                  )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 700)),
+                ),
+              });
 
         viewModel.mapController.addOverlay(regionMarker);
 
+        // location overlay 와 zindex 가 겹쳐 click 안되기에 최상단으로 지정
         regionMarker
+          ..setGlobalZIndex(500000)
           ..setMaxZoom(7)
           ..setIsMaxZoomInclusive(false);
       }
@@ -55,21 +60,26 @@ class _NaverMapWidget extends State<NaverMapWidget> {
 
     /// Station Marker Setting
     Future<void> setStationMarker() async {
+      // MarkerStation load 함으로써 resource 최적화 (0.3초 단축 성공)
+      final energy = {
+        'high': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.high), size: Size(15.w, 9.w), context: context),
+        'middle': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.middle), size: Size(15.w, 9.w), context: context),
+        'low': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.low), size: Size(15.w, 9.w), context: context),
+        'empty': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.grey), size: Size(15.w, 9.w), context: context),
+      };
+
       for (StationData stn in viewModel.stationList) {
         int? haveEnergy = stn.possibleVehicle is num ? (stn.possibleVehicle! - (stn.waitingVehicle ?? 0)) : null;
 
         NMarker stationMarker = NMarker(
           id: stn.stationId!,
-          icon: await NOverlayImage.fromWidget(
-              widget: MarkerStation(haveEnergy == null
-                  ? AppColor.grey
-                  : haveEnergy < 10
-                      ? AppColor.low
-                      : haveEnergy < 25
-                          ? AppColor.middle
-                          : AppColor.high),
-              size: Size(15.w, 9.w),
-              context: context),
+          icon: (haveEnergy == null || haveEnergy == 0)
+              ? energy['empty']
+              : haveEnergy < 10
+                  ? energy['low']
+                  : haveEnergy < 25
+                      ? energy['middle']
+                      : energy['high'],
           position: NLatLng(stn.latitude!, stn.longitude!),
           caption: NOverlayCaption(text: '${haveEnergy ?? '??'}', color: AppColor.white, haloColor: AppColor.grey),
           captionAligns: [NAlign.center],
@@ -79,7 +89,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
                 NCameraUpdate.scrollAndZoomTo(
                   target: NLatLng(stn.latitude!, stn.longitude!),
                   zoom: 14,
-                )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 900)),
+                )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 700)),
               ),
             });
 
