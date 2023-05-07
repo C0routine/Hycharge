@@ -16,6 +16,7 @@ class MapVM extends ChangeNotifier {
 
   // request delay time
   int _delayTimeStamp = 0;
+
   // map Ready
   bool _mapReady = false;
 
@@ -30,6 +31,8 @@ class MapVM extends ChangeNotifier {
   int get delayTimeStamp => _delayTimeStamp;
 
   bool get mapReady => _mapReady;
+
+  setMapReady(bool ready) => _mapReady = ready;
 
   /// NaverMapViewModel 초기화, NaverMap-onMapReady 실행 이후에 사용.
   Future<void> initViewModel(NaverMapController controller) async {
@@ -68,30 +71,34 @@ class MapVM extends ChangeNotifier {
   }
 
   /// 충전소 정보 update
-  Future<void> updateStation() async {
+  Future<bool> updateStation() async {
     int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
     if (_delayTimeStamp >= currentTimeStamp) {
       print('Request Delay... have time : ${(_delayTimeStamp - currentTimeStamp) / 1000}sec');
-      return;
+      return false;
     }
 
     // update station 값을 받아오고 빈 값인지 확인
     List<StationData> stations = await API.station.getStationList();
-    if (stations.isEmpty) return;
+    if (stations.isEmpty) return false;
 
-    // 최초 1회만 할당하기 위해, region 값이 빈값인지 확인.
-    if (regionList.isEmpty) {
-      List<RegionData> regions = stationRegionFilter(stations);
-      _regionList = regions;
-    }
+    // 최초 1회만 할당하기 위해x, region 값이 빈값인지 확인.
+    // if (regionList.isEmpty) {
+    //   List<RegionData> regions = stationRegionFilter(stations);
+    //   _regionList = regions;
+    // }
+
+    // region 값이 빈값인지 확인. (평균 가격 변화)
+    List<RegionData> regions = stationRegionFilter(stations);
+    _regionList = regions;
 
     // 성공적으로 update 된 station 값으로 변경.
     _stationList = stations;
 
     // request delay setting
     // _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
-    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 15000;
-    _mapReady = true;
+    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 10000;
+    return true;
     // notifyListeners();
   }
 }

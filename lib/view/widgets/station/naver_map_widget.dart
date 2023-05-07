@@ -35,6 +35,8 @@ class _NaverMapWidget extends State<NaverMapWidget> {
             id: r.fullName,
             position: r.nLatLng,
             caption: NOverlayCaption(text: r.name, color: AppColor.white, haloColor: AppColor.grey),
+            subCaption: NOverlayCaption(
+                text: r.totalPrice != 0 ? (r.totalPrice ~/ r.priceFew).toString() : '0', color: AppColor.white, haloColor: AppColor.grey),
             captionAligns: [NAlign.center],
             icon: markerIcon)
           ..setOnTapListener((overlay) => {
@@ -80,10 +82,10 @@ class _NaverMapWidget extends State<NaverMapWidget> {
                       ? energy['middle']
                       : energy['high'],
           position: NLatLng(stn.latitude!, stn.longitude!),
-          caption: NOverlayCaption(text: '${stn.timeStamp ?? '??'}', color: AppColor.white, haloColor: AppColor.grey),
+          caption: NOverlayCaption(text: '${stn.possibleVehicle ?? '??'}', color: AppColor.white, haloColor: AppColor.grey),
           captionAligns: [NAlign.center],
         )..setOnTapListener((overlay) => {
-              print(stn.name),
+              print(stn.timeStamp),
               bottomSheetVM.updateBottomSheet(stn),
               mapVM.mapController.updateCamera(
                 NCameraUpdate.scrollAndZoomTo(
@@ -139,13 +141,15 @@ class _NaverMapWidget extends State<NaverMapWidget> {
 
         await setRegionMarker();
         await setStationMarker();
-        print('Naver Map Ready Complete!');
+        mapVM.setMapReady(true);
       },
       onCameraIdle: () async {
-        if(mapVM.mapReady){
-          await mapVM.updateStation();
-          await setStationMarker();
-          setState(() {});
+        // camera change event end, Get station data
+        if (mapVM.mapReady) {
+          if (await mapVM.updateStation()) {
+            await setStationMarker();
+            await setRegionMarker();
+          }
         }
       },
     );
