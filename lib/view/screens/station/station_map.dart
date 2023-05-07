@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hycharge/view/widgets/global/custom_navigation_bar.dart';
 import 'package:hycharge/view/widgets/station/location_tracking_button.dart';
 import 'package:hycharge/view/widgets/station/naver_map_widget.dart';
+import 'package:hycharge/view/widgets/station/station_bottom_sheet.dart';
 
 class StationMap extends StatefulWidget {
   const StationMap({super.key});
@@ -17,19 +18,21 @@ class _StationMapState extends State<StationMap> {
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewPadding.bottom;
 
+    print('StationMap Screen Render!');
     return Scaffold(
+      // extendBody: true,
       body: Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.bottomCenter,
         children: [
-          NaverMapWidget(bottom: bottom),
+          const NaverMapWidget(),
           Positioned(
             bottom: (bottom + 60).w,
             child: const LocationTrackingButton(),
           ),
+          CustomNavigationBar(bottom: bottom),
+          const StationBottomSheet(),
         ],
       ),
-      extendBody: true,
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

@@ -6,7 +6,9 @@ import 'package:hycharge/view_model/app/app_colors.dart';
 import 'package:hycharge/view_model/app/dark_theme.dart';
 
 class CustomNavigationBar extends StatefulWidget {
-  const CustomNavigationBar({super.key});
+  const CustomNavigationBar({super.key, required this.bottom});
+
+  final double bottom;
 
   @override
   State<StatefulWidget> createState() => _CustomNavigationBar();
@@ -24,11 +26,10 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<DarkTheme>().isDark;
-    final bottom = MediaQuery.of(context).viewPadding.bottom;
 
     return Container(
       height: 55.w,
-      margin: EdgeInsets.only(bottom: bottom, left: 0.115.sw, right: 0.115.sw),
+      margin: EdgeInsets.only(bottom: widget.bottom, left: 0.115.sw, right: 0.115.sw),
       padding: EdgeInsets.symmetric(horizontal: 0.035.sw, vertical: 5.w),
       decoration: BoxDecoration(
         color: AppColor.background(isDark),

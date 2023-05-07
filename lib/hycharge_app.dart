@@ -31,6 +31,7 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    print('Start HyCharge APP');
     return ScreenUtilInit(
       // 디자인 size width, height
       designSize: const Size(393, 852),

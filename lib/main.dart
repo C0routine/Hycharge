@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:hycharge/hycharge_app.dart';
 import 'package:hycharge/model/services/network.dart';
 import 'package:hycharge/view_model/app/dark_theme.dart';
-import 'package:hycharge/view_model/station/station_map_vm.dart';
+import 'package:hycharge/view_model/station/map_vm.dart';
+import 'package:hycharge/view_model/station/bottom_sheet_vm.dart';
 
 Future<void> main() async {
   // .env load
@@ -22,12 +23,14 @@ Future<void> main() async {
   // Singleton Pattern Network Class Dio 를 초기화
   Network();
 
+  print('Start Main');
   runApp(
     // Provider 등록
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DarkTheme()),
-        ChangeNotifierProvider(create: (_) => StationMapViewModel()),
+        ChangeNotifierProvider(create: (_) => MapVM()),
+        ChangeNotifierProvider(create: (_) => BottomSheetVM()),
       ],
       child: const HyChargeApp(),
     ),

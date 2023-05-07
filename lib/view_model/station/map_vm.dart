@@ -8,7 +8,7 @@ import 'package:hycharge/model/station/station_data.dart';
 import 'package:hycharge/view_model/app/app_permission.dart';
 
 /// NaverMap ViewModel (NaverMapViewModel 초기화 필수)
-class StationMapViewModel extends ChangeNotifier {
+class MapVM extends ChangeNotifier {
   late NaverMapController _mapController;
   late NLocationOverlay _locationOverlay;
   List<StationData> _stationList = [];
@@ -16,6 +16,8 @@ class StationMapViewModel extends ChangeNotifier {
 
   // request delay time
   int _delayTimeStamp = 0;
+  // map Ready
+  bool _mapReady = false;
 
   NaverMapController get mapController => _mapController;
 
@@ -26,6 +28,8 @@ class StationMapViewModel extends ChangeNotifier {
   List<RegionData> get regionList => _regionList;
 
   int get delayTimeStamp => _delayTimeStamp;
+
+  bool get mapReady => _mapReady;
 
   /// NaverMapViewModel 초기화, NaverMap-onMapReady 실행 이후에 사용.
   Future<void> initViewModel(NaverMapController controller) async {
@@ -85,7 +89,9 @@ class StationMapViewModel extends ChangeNotifier {
     _stationList = stations;
 
     // request delay setting
-    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
-    notifyListeners();
+    // _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
+    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 15000;
+    _mapReady = true;
+    // notifyListeners();
   }
 }

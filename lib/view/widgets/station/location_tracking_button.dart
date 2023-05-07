@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:hycharge/view_model/app/app_colors.dart';
 import 'package:hycharge/view_model/app/dark_theme.dart';
-import 'package:hycharge/view_model/station/station_map_vm.dart';
+import 'package:hycharge/view_model/station/map_vm.dart';
 
 /// Location Tracking Button Widget
 class LocationTrackingButton extends StatefulWidget {
@@ -18,7 +18,7 @@ class _LocationTrackingButton extends State<LocationTrackingButton> {
   @override
   Widget build(BuildContext context) {
     final bool isDark = context.watch<DarkTheme>().isDark;
-    final viewModel = context.read<StationMapViewModel>();
+    final mapVM = context.read<MapVM>();
 
     return SizedBox(
       width: 55.w,
@@ -27,11 +27,11 @@ class _LocationTrackingButton extends State<LocationTrackingButton> {
         color: AppColor.background(isDark),
         borderRadius: BorderRadius.circular(30).w,
         child: InkWell(
-          onTap: () => viewModel.setLocationTracking(),
+          onTap: () => mapVM.setLocationTracking(),
           splashColor: AppColor.enableColor.withOpacity(0.25),
           highlightColor: AppColor.enableColor.withOpacity(0.25),
           borderRadius: BorderRadius.circular(30).w,
-          child: Icon(Icons.navigation_rounded, color: AppColor.enableColor),
+          child: const Icon(Icons.navigation_rounded, color: AppColor.enableColor),
         ),
       ),
     );
