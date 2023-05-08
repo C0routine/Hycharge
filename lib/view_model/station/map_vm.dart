@@ -97,7 +97,7 @@ class MapVM extends ChangeNotifier {
 
     // request delay setting
     // _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
-    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 10000;
+    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 30000;
     return true;
     // notifyListeners();
   }

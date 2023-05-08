@@ -16,10 +16,12 @@ class _StationBottomSheet extends State<StationBottomSheet> {
 
     print('Render BottomSheet');
     return DraggableScrollableSheet(
-      expand: false,
-      initialChildSize: bottomVM.bottomSheetInitSize,
+      expand: true,
+      snap: true,
+      snapSizes: const [.32],
+      controller: bottomVM.dragController,
       minChildSize: 0,
-      // maxChildSize: widget.size,
+      initialChildSize: 0,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           color: Colors.white,
@@ -28,6 +30,7 @@ class _StationBottomSheet extends State<StationBottomSheet> {
             itemCount: 100,
             itemBuilder: (context, index) => ListTile(
               title: Text('${bottomVM.stationData?.timeStamp} $index'),
+              subtitle: Text('${bottomVM.stationData?.name} $index'),
             ),
           ),
         );
