@@ -30,7 +30,7 @@ class _StationMapState extends State<StationMap> {
             child: const LocationTrackingButton(),
           ),
           CustomNavigationBar(bottom: bottom),
-          const StationBottomSheet(),
+          StationBottomSheet(bottom: bottom),
         ],
       ),
     );

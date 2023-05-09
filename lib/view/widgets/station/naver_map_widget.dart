@@ -154,7 +154,9 @@ class _NaverMapWidget extends State<NaverMapWidget> {
       },
       onMapTapped: (point, latLng) {
         print('Map Tapped : $point $latLng');
-        bottomSheetVM.closeBottomSheet();
+        if (bottomSheetVM.dragController.isAttached) {
+          bottomSheetVM.closeBottomSheet();
+        }
       },
     );
   }

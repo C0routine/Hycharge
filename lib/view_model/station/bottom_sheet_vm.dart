@@ -6,6 +6,15 @@ class BottomSheetVM extends ChangeNotifier {
 
   StationData? _stationData;
 
+  bool _bsMode = true;
+
+  bool get bsMode => _bsMode;
+
+  void bsModeChange() {
+    _bsMode = !_bsMode;
+    notifyListeners();
+  }
+
   DraggableScrollableController get dragController => _dragControl;
 
   StationData? get stationData => _stationData;
