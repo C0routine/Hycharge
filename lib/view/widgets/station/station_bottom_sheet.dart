@@ -1,6 +1,8 @@
-import 'package:flutter/gestures.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hycharge/view/widgets/station/bs/bs_header_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/view_model/app/app_colors.dart';
@@ -19,67 +21,46 @@ class StationBottomSheet extends StatefulWidget {
 class _StationBottomSheet extends State<StationBottomSheet> {
   @override
   Widget build(BuildContext context) {
+    final top = MediaQuery.of(context).viewPadding.top;
     final bool isDark = context.watch<DarkTheme>().isDark;
     final bottomVM = context.watch<BottomSheetVM>();
 
-    Container _itemWidget(double height, double top) {
-      return Container(
-        width: 100,
-        height: height,
-        color: AppColor.red,
-        margin: EdgeInsets.only(top: top),
+    AnimatedContainer bsHandlerWidget() {
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: 32.w,
+        height: bottomVM.bsMode ? 4.h : 0,
+        margin: EdgeInsets.symmetric(vertical: bottomVM.bsMode ? 8.h : 0),
+        decoration: BoxDecoration(
+          color: AppColor.grey,
+          borderRadius: BorderRadius.circular(16.w),
+        ),
       );
     }
-
-    Column _columnWidget() {
-      return Column(
-        children: [
-          Container(
-            width: 60,
-            height: 5,
-            color: AppColor.grey,
-          ),
-          _itemWidget(100, 0),
-          _itemWidget(200, 50),
-          _itemWidget(300, 50),
-          _itemWidget(400, 50),
-          _itemWidget(500, 50),
-        ],
-      );
-    }
-
-    // Container _
-
-    // bottomVM.dragController.addListener(() { })
 
     print('Render BottomSheet');
     return NotificationListener<DraggableScrollableNotification>(
       onNotification: (drag) {
-        print(drag.extent);
-        if (double.parse(drag.extent.toStringAsFixed(5)) >= 0.95999 && bottomVM.bsMode) {
+        if (double.parse(drag.extent.toStringAsFixed(5)) >= 0.86999 && bottomVM.bsMode) {
           bottomVM.bsModeChange();
         }
 
-        if (double.parse(drag.extent.toStringAsFixed(5)) <= 0.80999 && bottomVM.bsMode == false) {
+        if (double.parse(drag.extent.toStringAsFixed(5)) <= 0.85999 && bottomVM.bsMode == false) {
           bottomVM.bsModeChange();
         }
-
-        // if ((double.parse(drag.extent.toStringAsFixed(5)) == 0.31999 || double.parse(drag.extent.toStringAsFixed(5)) == 0.32000) &&
-        //     (bottomVM.bsMode == false)) {
-        //   bottomVM.bsModeChange();
-        // }
         return false;
       },
       child: DraggableScrollableSheet(
         expand: true,
         snap: true,
-        snapSizes: const [.32],
+        snapSizes: const [.3],
         controller: bottomVM.dragController,
         minChildSize: 0,
         maxChildSize: 1,
         initialChildSize: 0,
         builder: (BuildContext context, ScrollController scrollController) {
           return Container(
+            padding: EdgeInsets.only(bottom: widget.bottom, left: 16.w, right: 16.w),
             decoration: BoxDecoration(
               color: AppColor.background(isDark),
               borderRadius: const BorderRadius.all(Radius.circular(16)),
@@ -92,18 +73,20 @@ class _StationBottomSheet extends State<StationBottomSheet> {
                 ),
               ],
             ),
-            padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.w, bottom: widget.bottom),
             child: SingleChildScrollView(
               controller: scrollController,
-              physics: ClampingScrollPhysics(),
-              // child: SafeArea(top: !bottomVM.bsMode, child: _columnWidget()),
+              physics: const BouncingScrollPhysics(),
               child: AnimatedContainer(
-                margin: EdgeInsets.only(top: bottomVM.bsMode ? 0 :60),
-                duration: Duration(milliseconds: 700),
-                child: _columnWidget(),
+                duration: const Duration(milliseconds: 340),
+                margin: EdgeInsets.only(top: bottomVM.bsMode ? 0 : top + (Platform.isIOS ? 8.h : 16.h)),
+                child: Column(
+                  children: [
+                    bsHandlerWidget(),
+                    BottomSheetHeaderWidget(),
+                  ],
+                ),
               ),
             ),
-            // ),
           );
         },
       ),

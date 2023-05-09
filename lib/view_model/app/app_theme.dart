@@ -9,7 +9,7 @@ class AppTheme {
     return ThemeData(
       scaffoldBackgroundColor: AppColor.white,
       brightness: Brightness.light,
-      textTheme: lightTextTheme,
+      textTheme: lightDartTextTheme(false),
     );
   }
 
@@ -18,35 +18,43 @@ class AppTheme {
     return ThemeData(
       scaffoldBackgroundColor: AppColor.black,
       brightness: Brightness.dark,
-      textTheme: darkTextTheme,
+      textTheme: lightDartTextTheme(true),
     );
   }
 
-  /// LightMode Text Theme
-  static TextTheme lightTextTheme = TextTheme(
-    bodyMedium: TextStyle(
-      fontSize: 16.sp,
-      fontWeight: FontWeight.normal,
-      color: AppColor.black,
-    ),
-    bodySmall: TextStyle(
-      fontSize: 12.sp,
-      fontWeight: FontWeight.normal,
-      color: AppColor.black,
-    ),
-  );
+  /// LightMode & DarkMode Text Theme
+  static TextTheme lightDartTextTheme(bool dark) =>
+      TextTheme(
+        // normal title Text
+          titleMedium: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w700,
+            color: dark ? AppColor.white : AppColor.black,
+            overflow: TextOverflow.clip,
+          ),
 
-  /// DarkMode Text Theme
-  static TextTheme darkTextTheme = TextTheme(
-    bodyMedium: TextStyle(
-      fontSize: 16.sp,
-      fontWeight: FontWeight.normal,
-      color: AppColor.white,
-    ),
-    bodySmall: TextStyle(
-      fontSize: 12.sp,
-      fontWeight: FontWeight.normal,
-      color: AppColor.white,
-    ),
-  );
+          // normal text
+          bodyMedium: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: dark ? AppColor.white : AppColor.black,
+            overflow: TextOverflow.clip,
+          ),
+
+          // small text (hint)
+          bodySmall: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w400,
+            color: dark ? AppColor.white : AppColor.black,
+            overflow: TextOverflow.clip,
+          ),
+
+          // normal label text (tag)
+          labelMedium: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w400,
+            color: dark ? AppColor.enableColor : AppColor.enableColor,
+            overflow: TextOverflow.clip,
+          )
+      );
 }
