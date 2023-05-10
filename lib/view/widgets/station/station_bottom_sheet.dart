@@ -53,7 +53,7 @@ class _StationBottomSheet extends State<StationBottomSheet> {
       child: DraggableScrollableSheet(
         expand: true,
         snap: true,
-        snapSizes: const [.3],
+        snapSizes: const [.28],
         controller: bottomVM.dragController,
         minChildSize: 0,
         maxChildSize: 1,

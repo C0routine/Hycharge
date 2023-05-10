@@ -23,38 +23,31 @@ class AppTheme {
   }
 
   /// LightMode & DarkMode Text Theme
-  static TextTheme lightDartTextTheme(bool dark) =>
-      TextTheme(
-        // normal title Text
-          titleMedium: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w700,
-            color: dark ? AppColor.white : AppColor.black,
-            overflow: TextOverflow.clip,
-          ),
+  static TextTheme lightDartTextTheme(bool dark) {
+    return TextTheme(
+      // normal title Text
+      titleMedium: TextStyle(
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w700,
+        color: dark ? AppColor.white : AppColor.black,
+        overflow: TextOverflow.clip,
+      ),
 
-          // normal text
-          bodyMedium: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-            color: dark ? AppColor.white : AppColor.black,
-            overflow: TextOverflow.clip,
-          ),
+      // normal text
+      bodyMedium: TextStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        color: dark ? AppColor.white : AppColor.black,
+        overflow: TextOverflow.clip,
+      ),
 
-          // small text (hint)
-          bodySmall: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w400,
-            color: dark ? AppColor.white : AppColor.black,
-            overflow: TextOverflow.clip,
-          ),
-
-          // normal label text (tag)
-          labelMedium: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w400,
-            color: dark ? AppColor.enableColor : AppColor.enableColor,
-            overflow: TextOverflow.clip,
-          )
-      );
+      // small text (hint)
+      bodySmall: TextStyle(
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w400,
+        color: dark ? AppColor.white : AppColor.black,
+        overflow: TextOverflow.clip,
+      ),
+    );
+  }
 }
