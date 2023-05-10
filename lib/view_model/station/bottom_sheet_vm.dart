@@ -17,6 +17,14 @@ class BottomSheetVM extends ChangeNotifier {
   // bottom Sheet Scroll 변화에 따른 animation flag 값
   bool get bsMode => _bsMode;
 
+  /// 충전소 주소
+  String getStationAddress() {
+    if (_stationData?.address == null) {
+      return _stationData?.oldAddress ?? '-';
+    }
+    return _stationData!.address!;
+  }
+
   /// 충전소 운영상태
   String getOperateStatus() {
     switch (_stationData?.statusCode) {
@@ -57,18 +65,78 @@ class BottomSheetVM extends ChangeNotifier {
     }
   }
 
+  /// 충전소 공지사항 여부
+  bool getEventNotice() {
+    if (_stationData?.event == null) return false;
+    if (_stationData!.event!.isEmpty) return false;
+    return true;
+  }
+
+  /// 충전소 운영일, 시간
+  List<String> getOpenDaySchedule() {
+    List<String> schedule = [];
+    // if (_stationData == null) return [for (int day = 0; day < 8; day++) '--:-- ~ --:--'];
+    if (_stationData?.scheduleDay == null) return [for (int day = 0; day < 8; day++) '--:-- ~ --:--'];
+
+    void checkOpenDay(int idx, String start, String end) {
+      // 운영일일 경우
+      if (_stationData!.scheduleDay![idx] == '1') {
+        return schedule.add('${start.isEmpty ? '--:--' : start} ~ ${end.isEmpty ? '--:--' : end}');
+      }
+      // 휴무일일 경우
+      return schedule.add('휴무');
+    }
+
+    for (int idx = 0; idx < _stationData!.scheduleDay!.length; idx++) {
+      switch (idx) {
+        case 0:
+          checkOpenDay(idx, _stationData?.monStart ?? '--:--', _stationData?.monEnd ?? '--:--');
+          break;
+        case 1:
+          checkOpenDay(idx, _stationData?.tueStart ?? '--:--', _stationData?.tueEnd ?? '--:--');
+          break;
+        case 2:
+          checkOpenDay(idx, _stationData?.wedStart ?? '--:--', _stationData?.wedEnd ?? '--:--');
+          break;
+        case 3:
+          checkOpenDay(idx, _stationData?.thurStart ?? '--:--', _stationData?.thurEnd ?? '--:--');
+          break;
+        case 4:
+          checkOpenDay(idx, _stationData?.friStart ?? '--:--', _stationData?.friEnd ?? '--:--');
+          break;
+        case 5:
+          checkOpenDay(idx, _stationData?.satStart ?? '--:--', _stationData?.satEnd ?? '--:--');
+          break;
+        case 6:
+          checkOpenDay(idx, _stationData?.sunStart ?? '--:--', _stationData?.sunEnd ?? '--:--');
+          break;
+        case 7:
+          checkOpenDay(idx, _stationData?.holStart ?? '--:--', _stationData?.holEnd ?? '--:--');
+          break;
+        default:
+          break;
+      }
+    }
+
+    return schedule;
+  }
+
+  // Bottom Sheet Mode, Full Mode 전환 (Animation)
   void bsModeChange() {
     _bsMode = !_bsMode;
     notifyListeners();
   }
 
+  /// bottom sheet data 갱신
   void updateBottomSheet(StationData stnData) {
     _stationData = stnData;
     openBottomSheet();
     notifyListeners();
   }
 
+  /// bottom sheet open
   void openBottomSheet() => _dragControl.animateTo(.28, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);
 
+  /// bottom sheet close
   void closeBottomSheet() => _dragControl.animateTo(0, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);
 }

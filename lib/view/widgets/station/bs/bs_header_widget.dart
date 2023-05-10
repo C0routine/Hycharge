@@ -31,7 +31,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
     /// 충전소 주소
     stationAddress() {
       return Text(
-        bottomVM.stationData?.address ?? '-',
+        bottomVM.getStationAddress(),
         style: Theme.of(context).textTheme.bodySmall,
         overflow: TextOverflow.clip,
       );
@@ -141,48 +141,46 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
       );
     }
 
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(right: 16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      stationName(),
-                      stationAddress(),
-                    ],
-                  ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(right: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    stationName(),
+                    stationAddress(),
+                  ],
                 ),
               ),
-              bookMark(),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
-            child: Row(
-              children: [
-                statusBox('운영상태', bottomVM.getOperateStatus()),
-                statusBox('가격/kg', bottomVM.getPrice()),
-                statusBox('충전가능', bottomVM.getChargePossible()),
-                statusBox('대기차량', bottomVM.getChargeWaiting()),
-              ],
             ),
-          ),
-          Row(
+            bookMark(),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.h),
+          child: Row(
             children: [
-              directions(),
-              stationCall(),
+              statusBox('운영상태', bottomVM.getOperateStatus()),
+              statusBox('가격/kg', bottomVM.getPrice()),
+              statusBox('충전가능', bottomVM.getChargePossible()),
+              statusBox('대기차량', bottomVM.getChargeWaiting()),
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+        Row(
+          children: [
+            directions(),
+            stationCall(),
+          ],
+        )
+      ],
     );
   }
 }
