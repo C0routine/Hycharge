@@ -113,8 +113,8 @@ class Station {
     _regionDataList = stationRegionFilter(stationList);
 
     // delay TimeStamp Set
-    // _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
-    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 30000;
+    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
+    // _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 30000;
 
     // Station Filter Result
     // print('\nStation List : ${infoList.length} \nStation Detail : ${detailList.length}'

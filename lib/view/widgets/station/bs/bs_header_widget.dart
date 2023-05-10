@@ -22,7 +22,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
     /// 충전소 이름
     stationName() {
       return Text(
-        bottomVM.stationData?.name ?? '',
+        bottomVM.stationData?.name ?? '-',
         style: Theme.of(context).textTheme.titleMedium,
         overflow: TextOverflow.clip,
       );
@@ -31,7 +31,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
     /// 충전소 주소
     stationAddress() {
       return Text(
-        bottomVM.stationData?.address ?? '',
+        bottomVM.stationData?.address ?? '-',
         style: Theme.of(context).textTheme.bodySmall,
         overflow: TextOverflow.clip,
       );
@@ -49,7 +49,6 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
               color: AppColor.grey.withOpacity(0.3),
               shape: BoxShape.circle,
             ),
-            margin: EdgeInsets.only(left: 12.w),
             padding: EdgeInsets.all(6.w),
             child: Icon(Icons.bookmark_add_outlined, size: 26.w),
           ),
@@ -90,27 +89,33 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
     directions() {
       return Expanded(
         flex: 3,
-        child: Container(
-          height: 40.h,
-          margin: EdgeInsets.only(right: 16.w),
-          decoration: BoxDecoration(
+        child: Padding(
+          padding: EdgeInsets.only(right: 16.w),
+          child: Material(
             color: AppColor.enableColor,
             borderRadius: BorderRadius.circular(24.w),
-          ),
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '길 찾기',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.white),
-                  textAlign: TextAlign.center,
+            child: InkWell(
+              onTap: () {},
+              borderRadius: BorderRadius.circular(24.w),
+              child: SizedBox(
+                height: 44.h,
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '길 찾기',
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.white),
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.w),
+                        child: Icon(Icons.map_outlined, color: AppColor.white, size: 26.w),
+                      )
+                    ],
+                  ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.w),
-                  child: Icon(Icons.map_outlined, color: AppColor.white, size: 26.w),
-                )
-              ],
+              ),
             ),
           ),
         ),
@@ -121,13 +126,17 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
     stationCall() {
       return Expanded(
         flex: 1,
-        child: Container(
-          height: 40.h,
-          decoration: BoxDecoration(
-            color: AppColor.enableColor,
+        child: Material(
+          color: AppColor.enableColor,
+          borderRadius: BorderRadius.circular(24.w),
+          child: InkWell(
+            onTap: () => bottomVM.callLaunch(),
             borderRadius: BorderRadius.circular(24.w),
+            child: SizedBox(
+              height: 44.h,
+              child: Icon(Icons.phone_in_talk_rounded, color: AppColor.white, size: 26.w),
+            ),
           ),
-          child: Icon(Icons.phone_in_talk_rounded, color: AppColor.white, size: 26.w),
         ),
       );
     }
@@ -141,12 +150,15 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    stationName(),
-                    stationAddress(),
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      stationName(),
+                      stationAddress(),
+                    ],
+                  ),
                 ),
               ),
               bookMark(),
@@ -156,10 +168,10 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
             padding: EdgeInsets.symmetric(vertical: 10.h),
             child: Row(
               children: [
-                statusBox('운영여부', 'data'),
-                statusBox('가격/kg', 'data'),
-                statusBox('충전가능/대', 'data'),
-                statusBox('대기차량/대', 'data'),
+                statusBox('운영상태', bottomVM.getOperateStatus()),
+                statusBox('가격/kg', bottomVM.getPrice()),
+                statusBox('충전가능', bottomVM.getChargePossible()),
+                statusBox('대기차량', bottomVM.getChargeWaiting()),
               ],
             ),
           ),
