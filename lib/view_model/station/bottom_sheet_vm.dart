@@ -25,7 +25,7 @@ class BottomSheetVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  void openBottomSheet() => _dragControl.animateTo(.32, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);
+  void openBottomSheet() => _dragControl.animateTo(.28, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);
 
   void closeBottomSheet() => _dragControl.animateTo(0, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);
 }

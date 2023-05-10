@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 import 'package:hycharge/hycharge_app.dart';
 import 'package:hycharge/model/services/network.dart';
-import 'package:hycharge/view_model/app/dark_theme.dart';
+import 'package:hycharge/model/services/station.dart';
+import 'package:hycharge/view_model/dark_theme.dart';
 import 'package:hycharge/view_model/station/map_vm.dart';
 import 'package:hycharge/view_model/station/bottom_sheet_vm.dart';
 
@@ -22,6 +23,10 @@ Future<void> main() async {
 
   // Singleton Pattern Network Class Dio 를 초기화
   Network();
+
+  // api 중복 호출이 없어야하고, viewModel 간의 data 공유를 하지 않고, Model 에서 Data 를 전역적으로 관리
+  // 전역 Data 값을 미리 Load.
+  await Station().updateStationList();
 
   print('Start Main');
   runApp(

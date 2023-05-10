@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hycharge/view/widgets/station/bs/bs_header_widget.dart';
 import 'package:provider/provider.dart';
 
-import 'package:hycharge/view_model/app/app_colors.dart';
-import 'package:hycharge/view_model/app/dark_theme.dart';
+import 'package:hycharge/app/app_colors.dart';
+import 'package:hycharge/view_model/dark_theme.dart';
 import 'package:hycharge/view_model/station/bottom_sheet_vm.dart';
 
 class StationBottomSheet extends StatefulWidget {

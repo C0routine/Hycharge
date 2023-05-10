@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/router.dart';
-import 'package:hycharge/view_model/app/app_theme.dart';
-import 'package:hycharge/view_model/app/dark_theme.dart';
+import 'package:hycharge/app/app_theme.dart';
+import 'package:hycharge/view_model/dark_theme.dart';
 
 class HyChargeApp extends StatefulWidget {
   const HyChargeApp({super.key});

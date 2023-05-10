@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:hycharge/view_model/app/app_colors.dart';
+import 'package:hycharge/app/app_colors.dart';
 
 class AppTheme {
   /// LightMode Theme

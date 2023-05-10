@@ -1,10 +1,29 @@
 import 'package:hycharge/model/services/network.dart';
+import 'package:hycharge/model/station/region_data.dart';
 import 'package:hycharge/model/station/station_info.dart';
 import 'package:hycharge/model/station/station_detail.dart';
 import 'package:hycharge/model/station/station_data.dart';
 
-/// (Hydrogen) 수소 충전소 관련 API 정의
+/// (Hydrogen) 수소 충전소 관련 API & Data 정의
 class Station {
+  static List<StationData> _stationDataList = [];
+  static List<RegionData> _regionDataList = [];
+  int _delayTimeStamp = 0;
+
+  // 통합된 StationList Data
+  static List<StationData> get stnList => _stationDataList;
+
+  // 정리된 RegionList Data
+  static List<RegionData> get reginList => _regionDataList;
+
+  static final Station _station = Station._init();
+
+  factory Station() {
+    return _station;
+  }
+
+  Station._init();
+
   /// 충전소 운영 정보 List
   Future<List<StationInfo>> getStationInfo() async {
     final response = await Network.dio.get('/chrstnList/operationInfo');
@@ -25,8 +44,16 @@ class Station {
     return stationList;
   }
 
-  /// 충전소 정보 통합 List
-  Future<List<StationData>> getStationList() async {
+  /// 충전소 정보 통합 List 가져오기 & 갱신 (성공시 true, 실패시 false)
+  Future<bool> updateStationList() async {
+    // delay 시간과 현재 시간을 비교 후 api 요청
+    int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
+
+    if (_delayTimeStamp >= currentTimeStamp) {
+      print('Request Delay... have time: ${(_delayTimeStamp - currentTimeStamp) / 1000}sec');
+      return false;
+    }
+
     final infoResponse = await Network.dio.get('/chrstnList/operationInfo');
     final detailsResponse = await Network.dio.get('/chrstnList/currentInfo');
 
@@ -36,6 +63,9 @@ class Station {
     // 충전소 실시간 정보
     List<StationData> detailList = [];
     detailsResponse.data.forEach((detail) => detailList.add(StationData.fromJson(detail)));
+
+    // Json 가공 확인
+    if (infoList.isEmpty || detailList.isEmpty) return false;
 
     // 통합한 충전소 정보
     List<StationData> stationList = [];
@@ -75,10 +105,23 @@ class Station {
       }
     }
 
+    // Data 가공 확인
+    if (stationList.isEmpty) return false;
+
+    // Data Set
+    _stationDataList = stationList;
+    _regionDataList = stationRegionFilter(stationList);
+
+    // delay TimeStamp Set
+    // _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
+    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 30000;
+
     // Station Filter Result
-    print('\nStation List : ${infoList.length} \nStation Detail : ${detailList.length}'
-        '\nStation Empty Detail : ${emptyDetailsList.length} '
-        '\nStation Sync Failed Detail : ${detailList.length - (infoList.length - emptyDetailsList.length)}');
-    return stationList;
+    // print('\nStation List : ${infoList.length} \nStation Detail : ${detailList.length}'
+    //     '\nStation Empty Detail : ${emptyDetailsList.length} '
+    //     '\nStation Sync Failed Detail : ${detailList.length - (infoList.length - emptyDetailsList.length)}');
+    print('Update Success StationList: ${_stationDataList.length}');
+
+    return true;
   }
 }

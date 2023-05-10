@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:hycharge/app/app_permission.dart';
 import 'package:hycharge/model/services/api.dart';
+import 'package:hycharge/model/services/station.dart';
 import 'package:hycharge/model/station/region_data.dart';
 import 'package:hycharge/model/station/station_data.dart';
-import 'package:hycharge/view_model/app/app_permission.dart';
 
 /// NaverMap ViewModel (NaverMapViewModel 초기화 필수)
 class MapVM extends ChangeNotifier {
@@ -13,9 +14,6 @@ class MapVM extends ChangeNotifier {
   late NLocationOverlay _locationOverlay;
   List<StationData> _stationList = [];
   List<RegionData> _regionList = [];
-
-  // request delay time
-  int _delayTimeStamp = 0;
 
   // map Ready
   bool _mapReady = false;
@@ -27,8 +25,6 @@ class MapVM extends ChangeNotifier {
   List<StationData> get stationList => _stationList;
 
   List<RegionData> get regionList => _regionList;
-
-  int get delayTimeStamp => _delayTimeStamp;
 
   bool get mapReady => _mapReady;
 
@@ -70,35 +66,12 @@ class MapVM extends ChangeNotifier {
     }
   }
 
-  /// 충전소 정보 update
+  /// 충전소 정보 update, update data 를 viewModel 에 동기화. (view <-> model 통신은 안됨)
   Future<bool> updateStation() async {
-    int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
-    if (_delayTimeStamp >= currentTimeStamp) {
-      print('Request Delay... have time : ${(_delayTimeStamp - currentTimeStamp) / 1000}sec');
-      return false;
-    }
+    bool result = await API.station.updateStationList();
+    _stationList = Station.stnList;
+    _regionList = Station.reginList;
 
-    // update station 값을 받아오고 빈 값인지 확인
-    List<StationData> stations = await API.station.getStationList();
-    if (stations.isEmpty) return false;
-
-    // 최초 1회만 할당하기 위해x, region 값이 빈값인지 확인.
-    // if (regionList.isEmpty) {
-    //   List<RegionData> regions = stationRegionFilter(stations);
-    //   _regionList = regions;
-    // }
-
-    // region 값이 빈값인지 확인. (평균 가격 변화)
-    List<RegionData> regions = stationRegionFilter(stations);
-    _regionList = regions;
-
-    // 성공적으로 update 된 station 값으로 변경.
-    _stationList = stations;
-
-    // request delay setting
-    // _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 180000;
-    _delayTimeStamp = DateTime.now().millisecondsSinceEpoch + 30000;
-    return true;
-    // notifyListeners();
+    return result;
   }
 }
