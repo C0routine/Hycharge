@@ -4,6 +4,7 @@ import 'package:hycharge/model/station/station_info.dart';
 import 'package:hycharge/model/station/station_detail.dart';
 import 'package:hycharge/model/station/station_data.dart';
 
+/// Singleton Pattern 으로 생성.
 /// (Hydrogen) 수소 충전소 관련 API & Data 정의
 class Station {
   static List<StationData> _stationDataList = [];

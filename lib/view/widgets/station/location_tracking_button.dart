@@ -20,17 +20,17 @@ class _LocationTrackingButton extends State<LocationTrackingButton> {
     final bool isDark = context.watch<DarkTheme>().isDark;
     final mapVM = context.read<MapVM>();
 
-    return SizedBox(
-      width: 55.w,
-      height: 55.w,
-      child: Material(
-        color: AppColor.background(isDark),
-        borderRadius: BorderRadius.circular(30).w,
-        child: InkWell(
-          onTap: () => mapVM.setLocationTracking(),
-          splashColor: AppColor.enableColor.withOpacity(0.25),
-          highlightColor: AppColor.enableColor.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(30).w,
+    return Material(
+      shape: const CircleBorder(),
+      color: AppColor.background(isDark),
+      child: InkWell(
+        onTap: () => mapVM.setLocationTracking(),
+        customBorder: const CircleBorder(),
+        splashColor: AppColor.enableColor.withOpacity(0.25),
+        highlightColor: AppColor.enableColor.withOpacity(0.25),
+        child: SizedBox(
+          width: 55.w,
+          height: 55.w,
           child: const Icon(Icons.navigation_rounded, color: AppColor.enableColor),
         ),
       ),

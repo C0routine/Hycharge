@@ -72,6 +72,13 @@ class BottomSheetVM extends ChangeNotifier {
     return true;
   }
 
+  /// 충전소 휴게시간
+  String getBreakTime() {
+    if (_stationData?.breakStart == null || _stationData?.breakEnd == null) return '';
+    if (_stationData!.breakStart!.isEmpty || _stationData!.breakEnd!.isEmpty) return '';
+    return ' (휴게시간 : ${_stationData!.breakStart!} ~ ${_stationData!.breakEnd!})';
+  }
+
   /// 충전소 운영일, 시간
   List<String> getOpenDaySchedule() {
     List<String> schedule = [];
@@ -135,7 +142,7 @@ class BottomSheetVM extends ChangeNotifier {
   }
 
   /// bottom sheet open
-  void openBottomSheet() => _dragControl.animateTo(.28, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);
+  void openBottomSheet() => _dragControl.animateTo(.3, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);
 
   /// bottom sheet close
   void closeBottomSheet() => _dragControl.animateTo(0, duration: const Duration(milliseconds: 350), curve: Curves.easeInOutQuart);

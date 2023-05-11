@@ -26,7 +26,7 @@ class _StationMapState extends State<StationMap> {
         children: [
           const NaverMapWidget(),
           Positioned(
-            bottom: (bottom + 60).w,
+            bottom: bottom + 60.w,
             child: const LocationTrackingButton(),
           ),
           CustomNavigationBar(bottom: bottom),

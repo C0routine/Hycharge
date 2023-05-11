@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_colors.dart';
+import 'package:hycharge/app/app_style.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
 
 class CustomNavigationBar extends StatefulWidget {
@@ -23,6 +24,10 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
     Icons.settings,
   ];
 
+  Icon _navigationIcon(int index, Color color) {
+    return Icon(_iconList[index], color: color);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<DarkTheme>().isDark;
@@ -33,7 +38,7 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
       padding: EdgeInsets.symmetric(horizontal: 0.035.sw, vertical: 5.w),
       decoration: BoxDecoration(
         color: AppColor.background(isDark),
-        borderRadius: BorderRadius.circular(50.w),
+        borderRadius: AppStyle.hardBorderRadius,
       ),
       child: ListView.builder(
         itemCount: _iconList.length,
@@ -52,7 +57,7 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
               },
               focusColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              borderRadius: BorderRadius.circular(50.w),
+              borderRadius: AppStyle.hardBorderRadius,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -65,7 +70,7 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
                     width: index == currentIndex ? 0.24.sw : 0,
                     decoration: BoxDecoration(
                       color: index == currentIndex ? AppColor.enableColor.withOpacity(0.25) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(50.w),
+                      borderRadius: AppStyle.hardBorderRadius,
                     ),
                   ),
                 ],
@@ -75,9 +80,5 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
         },
       ),
     );
-  }
-
-  Icon _navigationIcon(int index, Color color) {
-    return Icon(_iconList[index], color: color);
   }
 }

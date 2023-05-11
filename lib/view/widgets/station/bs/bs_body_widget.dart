@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_colors.dart';
+import 'package:hycharge/app/app_style.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
 import 'package:hycharge/view_model/station/bottom_sheet_vm.dart';
 
@@ -22,7 +23,7 @@ class _BottomSheetBodyWidget extends State<BottomSheetBodyWidget> {
     /// 충전소 공지사항
     eventNotice() {
       return Container(
-        margin: EdgeInsets.only(top: bottomVM.getEventNotice() ? 28.h : 0),
+        margin: EdgeInsets.only(top: bottomVM.getEventNotice() ? 30.h : 0),
         child: bottomVM.getEventNotice()
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,16 +31,13 @@ class _BottomSheetBodyWidget extends State<BottomSheetBodyWidget> {
                   Text('충전소 공지사항', style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16.sp)),
                   Container(
                     alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(top: 5.h),
-                    padding: EdgeInsets.all(16.w),
+                    margin: AppStyle.gapTitle,
+                    padding: AppStyle.basicPadding,
                     decoration: BoxDecoration(
                       color: AppColor.backgroundBlur(isDark),
-                      borderRadius: BorderRadius.circular(16.w),
+                      borderRadius: AppStyle.borderRadius,
                     ),
-                    child: Text(
-                      bottomVM.stationData?.event ?? '',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    child: Text(bottomVM.stationData?.event ?? '', style: Theme.of(context).textTheme.bodyMedium),
                   ),
                 ],
               )
@@ -53,24 +51,27 @@ class _BottomSheetBodyWidget extends State<BottomSheetBodyWidget> {
       List<String> openDay = bottomVM.getOpenDaySchedule();
 
       return Container(
-        margin: EdgeInsets.only(top: 28.h),
+        margin: AppStyle.marginTop,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 5.h),
-              child: Text('운영시간', style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16.sp)),
+            Row(
+              children: [
+                Text('운영시간', style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16.sp)),
+                Text(bottomVM.getBreakTime(), style: Theme.of(context).textTheme.bodySmall),
+              ],
             ),
+            SizedBox(height: 5.h),
             ...List.generate(day.length, (idx) {
               return Container(
                 margin: EdgeInsets.only(bottom: 8.h),
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(color: AppColor.backgroundBlur(isDark), borderRadius: BorderRadius.circular(16.w)),
+                padding: AppStyle.basicPadding,
+                decoration: BoxDecoration(color: AppColor.backgroundBlur(isDark), borderRadius: AppStyle.borderRadius),
                 child: Row(
                   children: [
-                    Text(day[idx], style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w700)),
+                    Text(day[idx], style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14.sp)),
                     Padding(
-                      padding: EdgeInsets.only(left: 20.w),
+                      padding: AppStyle.gapLeft,
                       child: Text(openDay[idx], style: Theme.of(context).textTheme.bodyMedium!),
                     ),
                   ],
