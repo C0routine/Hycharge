@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -18,14 +19,17 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
+    // 3.7 deprecated WidgetsBinding.instance.window
+    // use PlatformDispatcher or View.of(context)
     // System Dark & Light Mode Change Listener
-    final window = WidgetsBinding.instance.window;
-    window.onPlatformBrightnessChanged = () {
+    final instance = PlatformDispatcher.instance;
+
+    instance.onPlatformBrightnessChanged = () {
       // TODO 추후 Release print Remove or Comments
-      print('Theme Change : ${window.platformBrightness == Brightness.dark ? 'Dark' : 'Light'}');
+      print('Theme Change : ${instance.platformBrightness == Brightness.dark ? 'Dark' : 'Light'}');
 
       // TODO User Custom Theme 를 위해서 User 가 지정한 Theme(내부 저장소) 가 있다면 바꾸지 않도록 분기(if) 필요.
-      context.read<DarkTheme>().changeMode(window.platformBrightness == Brightness.dark);
+      context.read<DarkTheme>().changeMode(instance.platformBrightness == Brightness.dark);
     };
   }
 
