@@ -51,7 +51,7 @@ class Station {
     int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
 
     if (_delayTimeStamp >= currentTimeStamp) {
-      print('Request Delay... have time: ${(_delayTimeStamp - currentTimeStamp) / 1000}sec');
+      print('Request Delay... have time: ${((_delayTimeStamp - currentTimeStamp) / 1000).floor()}sec');
       return false;
     }
 

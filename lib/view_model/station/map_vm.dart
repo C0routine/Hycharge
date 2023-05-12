@@ -33,7 +33,7 @@ class MapVM extends ChangeNotifier {
   /// NaverMapViewModel 초기화, NaverMap-onMapReady 실행 이후에 사용.
   Future<void> initViewModel(NaverMapController controller) async {
     _mapController = controller;
-    _locationOverlay = await controller.getLocationOverlay();
+    // _locationOverlay = await controller.getLocationOverlay();
   }
 
   /// 실시간 위치 추적 (Smooth Animation Apply)
@@ -53,7 +53,7 @@ class MapVM extends ChangeNotifier {
           NCameraUpdate.scrollAndZoomTo(
             zoom: camera.zoom < 16 ? 16 : camera.zoom,
             target: NLatLng(location.latitude, location.longitude),
-          )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 900)),
+          )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 700)),
         );
       }
 

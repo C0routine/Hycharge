@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_colors.dart';
 import 'package:hycharge/app/app_style.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
+import 'package:hycharge/view_model/navigation_vm.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({super.key, required this.bottom});
@@ -16,21 +18,16 @@ class CustomNavigationBar extends StatefulWidget {
 }
 
 class _CustomNavigationBar extends State<CustomNavigationBar> {
-  int currentIndex = 1;
-
   final List<IconData> _iconList = [
     Icons.favorite,
     Icons.local_gas_station_rounded,
     Icons.settings,
   ];
 
-  Icon _navigationIcon(int index, Color color) {
-    return Icon(_iconList[index], color: color);
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<DarkTheme>().isDark;
+    final naviVM = context.watch<NavigationViewModel>();
 
     return Container(
       height: 55.w,
@@ -49,10 +46,11 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
             width: (0.7 / 3).sw,
             child: InkWell(
               onTap: () {
-                if (currentIndex != index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
+                if (naviVM.screenIndex != index) {
+                  naviVM.setScreenIndex(index);
+                  // if(index == 0) context.go('/bookmark');
+                  // if(index == 1) context.go('/station');
+                  // if(index == 2) context.go('/settings');
                 }
               },
               focusColor: Colors.transparent,
@@ -61,15 +59,15 @@ class _CustomNavigationBar extends State<CustomNavigationBar> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  _navigationIcon(index, currentIndex == index ? AppColor.enableColor : AppColor.disableColor),
+                  Icon(_iconList[index], color: naviVM.screenIndex == index ? AppColor.enableColor : AppColor.disableColor),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 700),
                     curve: Curves.decelerate,
-                    height: index == currentIndex ? 41.w : 0,
+                    height: index == naviVM.screenIndex ? 41.w : 0,
                     // 최대 width 로 설정
-                    width: index == currentIndex ? 0.24.sw : 0,
+                    width: index == naviVM.screenIndex ? 0.24.sw : 0,
                     decoration: BoxDecoration(
-                      color: index == currentIndex ? AppColor.enableColor.withOpacity(0.25) : Colors.transparent,
+                      color: index == naviVM.screenIndex ? AppColor.enableColor.withOpacity(0.25) : Colors.transparent,
                       borderRadius: AppStyle.hardBorderRadius,
                     ),
                   ),

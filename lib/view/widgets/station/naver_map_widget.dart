@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:hycharge/app/app_colors.dart';
 import 'package:hycharge/model/station/region_data.dart';
 import 'package:hycharge/model/station/station_data.dart';
-import 'package:hycharge/view/widgets/station/marker_region.dart';
-import 'package:hycharge/view/widgets/station/marker_station.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
 import 'package:hycharge/view_model/station/map_vm.dart';
 import 'package:hycharge/view_model/station/bottom_sheet_vm.dart';
+import 'package:hycharge/view/widgets/station/marker_region.dart';
+import 'package:hycharge/view/widgets/station/marker_station.dart';
 
 class NaverMapWidget extends StatefulWidget {
   const NaverMapWidget({super.key});
@@ -136,11 +136,12 @@ class _NaverMapWidget extends State<NaverMapWidget> {
       ),
       onMapReady: (controller) async {
         await mapVM.initViewModel(controller);
-        await mapVM.setLocationTracking();
         await mapVM.updateStation();
-
         await setRegionMarker();
         await setStationMarker();
+
+        // location Tracking 으로 인해 marker render 안되는 문제 있음(marker 보다 후순위).
+        await mapVM.setLocationTracking();
         mapVM.setMapReady(true);
       },
       onCameraIdle: () async {
