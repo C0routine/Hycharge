@@ -5,43 +5,37 @@ class BookMark extends StatefulWidget {
   const BookMark({super.key});
 
   @override
-  State<StatefulWidget> createState() => _BookMark();
+  State<StatefulWidget> createState() => BookMarkState();
 }
 
-class _BookMark extends State<BookMark>
-    with AutomaticKeepAliveClientMixin<BookMark>
-{
-  int click = 0;
-
-  @override
-  bool get wantKeepAlive => true;
+class BookMarkState extends State<BookMark> with AutomaticKeepAliveClientMixin {
+  int index = 0;
 
   @override
   void initState() {
     super.initState();
-    print('init BookMark');
+    // print('init BookMark');
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     print('BookMark Screen Render');
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('BookMark Page'),
-            TextButton(onPressed: (){
-              setState(() {
-                click++;
-              });
-            }, child: Text('click $click'))
-          ],
+    return Center(
+      child: Container(
+        // color: Colors.transparent,
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              index++;
+            });
+          },
+          child: Text('current Tap : $index'),
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

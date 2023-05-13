@@ -36,7 +36,6 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => DarkTheme()),
         ChangeNotifierProvider(create: (_) => MapVM()),
         ChangeNotifierProvider(create: (_) => BottomSheetVM()),
-        ChangeNotifierProvider(create: (_) => NavigationViewModel()),
       ],
       child: const HyChargeApp(),
     ),

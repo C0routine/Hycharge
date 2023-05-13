@@ -7,17 +7,15 @@ class Settings extends StatefulWidget {
   State<StatefulWidget> createState() => _Settings();
 }
 
-class _Settings extends State<Settings>
-    // with AutomaticKeepAliveClientMixin<Settings>
+class _Settings extends State<Settings> // with AutomaticKeepAliveClientMixin<Settings>
 {
   // @override
   // bool get wantKeepAlive => true;
 
-
   @override
   void initState() {
     super.initState();
-    print('init Settings');
+    // print('init Settings');
   }
 
   @override
@@ -25,7 +23,7 @@ class _Settings extends State<Settings>
     // super.build(context);
     print('Settings Screen Render');
     return Container(
-      color: Colors.white,
+      color: Colors.transparent,
       child: Center(
         child: Text('Settings Page'),
       ),
