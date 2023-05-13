@@ -62,9 +62,11 @@ class _CustomTabBar extends State<CustomNavigationBar> {
       ),
       child: TabBar(
         // isScrollable: true,
-        indicator: const UnderlineTabIndicator(borderSide: BorderSide.none),
         controller: widget.tabController,
-        labelPadding: const EdgeInsets.all(0),
+        indicator: const UnderlineTabIndicator(borderSide: BorderSide.none),
+        indicatorWeight: 0,
+        dividerColor: Colors.transparent,
+        labelPadding: EdgeInsets.zero,
         tabs: [
           Tab(child: tabAnimatedWidget(0, Icons.favorite)),
           Tab(child: tabAnimatedWidget(1, Icons.local_gas_station_rounded)),

@@ -35,7 +35,6 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // print(MediaQuery.of(context).viewPadding);
     return ScreenUtilInit(
       // 디자인 size width, height
       designSize: const Size(393, 852),
@@ -59,6 +58,7 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
           debugShowCheckedModeBanner: false,
 
           builder: (context, child) {
+            print(MediaQuery.of(context).viewPadding);
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
               child: child!,

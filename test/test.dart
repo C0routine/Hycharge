@@ -1,6 +1,8 @@
 
 void main () {
-  List test = [for (int day = 0; day < 8; day++) '--:-- ~ --:--'];
-  print(test);
+  String? test1;
+  String? test2;
+
+  print(test1 ?? test2 ?? 'nop');
 
 }

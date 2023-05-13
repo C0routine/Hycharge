@@ -10,6 +10,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColor.white,
       brightness: Brightness.light,
       textTheme: lightDartTextTheme(false),
+      useMaterial3: true,
     );
   }
 
@@ -19,6 +20,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppColor.black,
       brightness: Brightness.dark,
       textTheme: lightDartTextTheme(true),
+      useMaterial3: true,
     );
   }
 
