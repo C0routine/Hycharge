@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hycharge/app/app_style.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/router.dart';
@@ -58,7 +59,7 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
           debugShowCheckedModeBanner: false,
 
           builder: (context, child) {
-            print(MediaQuery.of(context).viewPadding);
+            AppStyle.safeArea = MediaQuery.of(context).viewPadding;
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
               child: child!,

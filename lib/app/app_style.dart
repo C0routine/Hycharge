@@ -6,11 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppStyle {
   static final AppStyle _appStyle = AppStyle._init();
 
-  factory AppStyle() {
+  factory AppStyle(EdgeInsets edgeInsets) {
     return _appStyle;
   }
 
   AppStyle._init();
+
+  // SafeArea 간격
+  static EdgeInsets safeArea = EdgeInsets.zero;
 
   /// ui 간 vertical 간격
   static EdgeInsetsGeometry gapVertical = EdgeInsets.symmetric(vertical: 16.h);

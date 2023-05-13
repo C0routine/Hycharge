@@ -10,9 +10,7 @@ import 'package:hycharge/view/widgets/station/bs/bs_body_widget.dart';
 import 'package:hycharge/view/widgets/station/bs/bs_header_widget.dart';
 
 class StationBottomSheet extends StatefulWidget {
-  const StationBottomSheet({super.key, required this.bottom});
-
-  final double bottom;
+  const StationBottomSheet({super.key});
 
   @override
   State<StatefulWidget> createState() => _StationBottomSheet();
@@ -72,7 +70,7 @@ class _StationBottomSheet extends State<StationBottomSheet> {
             duration: const Duration(milliseconds: 400),
             padding: EdgeInsets.only(
               top: bottomVM.bsMode ? 0 : (top + 5.h),
-              bottom: widget.bottom,
+              bottom: AppStyle.safeArea.bottom,
               left: 16.w,
               right: 16.w,
             ),

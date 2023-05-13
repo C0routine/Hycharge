@@ -30,8 +30,6 @@ class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final bottom = MediaQuery.of(context).viewPadding.bottom;
-
     return Scaffold(
       // extendBody: true,
       body: Stack(
@@ -40,16 +38,16 @@ class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
           TabBarView(
             controller: tabController,
             physics: const NeverScrollableScrollPhysics(),
-            children: [
+            children: const [
               BookMark(),
-              StationMap(bottom: bottom),
+              StationMap(),
               Settings(),
             ],
           ),
           CustomNavigationBar(tabController: tabController),
 
           // bottomSheet 가 Navigation bar 보다 index 가 우선.
-          StationBottomSheet(bottom: bottom)
+          const StationBottomSheet(),
         ],
       ),
     );
