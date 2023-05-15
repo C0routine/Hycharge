@@ -1,7 +1,7 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:hycharge/model/services/network.dart';
 import 'package:hycharge/model/station/region_data.dart';
-import 'package:hycharge/model/station/station_info.dart';
-import 'package:hycharge/model/station/station_detail.dart';
 import 'package:hycharge/model/station/station_data.dart';
 
 /// Singleton Pattern 으로 생성.
@@ -24,26 +24,6 @@ class Station {
   }
 
   Station._init();
-
-  /// 충전소 운영 정보 List
-  Future<List<StationInfo>> getStationInfo() async {
-    final response = await Network.dio.get('/chrstnList/operationInfo');
-
-    List<StationInfo> stationList = [];
-    response.data.forEach((station) => stationList.add(StationInfo.fromJson(station)));
-
-    return stationList;
-  }
-
-  /// 충전소 실시간 정보
-  Future<List<StationDetail>> getStationDetails() async {
-    final response = await Network.dio.get('/chrstnList/currentInfo');
-
-    List<StationDetail> stationList = [];
-    response.data.forEach((station) => stationList.add(StationDetail.fromJson(station)));
-
-    return stationList;
-  }
 
   /// 충전소 정보 통합 List 가져오기 & 갱신 (성공시 true, 실패시 false)
   Future<bool> updateStationList() async {
@@ -73,15 +53,27 @@ class Station {
     // 실시간 정보(상세 정보) 값이 없는 station
     List<StationData> emptyDetailsList = [];
 
+    // BookMark data
+    final SharedPreferences storage = await SharedPreferences.getInstance();
+    List<String> bookMarkList = storage.getStringList('bookmark') ?? [];
+
     // 동기화 되지 않는 데이터 목록 필터링
-    for (int info = 0; info < infoList.length - 1; info++) {
+    for (int info = 0; info < infoList.length; info++) {
       // 실시간 정보 있는지 확인하는 flag 값
       bool isEmpty = true;
 
       // 먼저 충전소 운영 정보 push, 실시간 정보 보다 많음
-      stationList.add(infoList[info]);
+      if (infoList[info].stationId != null) {
+        for (int mark = 0; mark > bookMarkList.length; mark++) {
+          if (infoList[info].stationId == bookMarkList[mark]) {
+            infoList[info].isBookMark = true;
+            break;
+          }
+        }
+        stationList.add(infoList[info]);
+      }
 
-      for (int dex = 0; dex < detailList.length - 1; dex++) {
+      for (int dex = 0; dex < detailList.length; dex++) {
         // 같은 id 값일 경우 값 동기화
         if (infoList[info].stationId == detailList[dex].stationId) {
           infoList[info].pressure = detailList[dex].pressure;

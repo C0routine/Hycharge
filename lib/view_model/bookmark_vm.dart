@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:hycharge/model/services/api.dart';
 import 'package:hycharge/model/services/station.dart';
 import 'package:hycharge/model/station/station_data.dart';
 
 class BookMarkVM extends ChangeNotifier {
-  List<StationData> _stationList = [];
   List<StationData?> _bookMarkList = [];
-
-  List<StationData> get stationList => _stationList;
 
   List<StationData?> get bookMarkList => _bookMarkList;
 
@@ -44,21 +42,36 @@ class BookMarkVM extends ChangeNotifier {
     return '${stationData!.waitingVehicle}대';
   }
 
-  // 충전소 list 에서 bookmark 정보 get
-  void findBookMark() {
-    //TODO storage load bookmark
-    //TODO stationList filter Bookmark
+  Future<void> removeBookMark(String stationId) async {
+    final SharedPreferences storage = await SharedPreferences.getInstance();
+    List<String> bookMarkList = storage.getStringList('bookmark') ?? [];
 
-    //TODO bookmark Data load.
-    _bookMarkList = _stationList;
+    if (bookMarkList.isEmpty) return;
+
+    for (int stn = 0; stn < Station.stnList.length; stn++) {
+      if (Station.stnList[stn].stationId == stationId) {
+        Station.stnList[stn].isBookMark = false;
+        break;
+      }
+    }
+
+    Set<String> newBookMarkList = bookMarkList.toSet();
+    newBookMarkList.remove(stationId);
+    await storage.setStringList('bookmark', newBookMarkList.toList());
+
+    await updateBookMark();
   }
 
   // 충전소 정보 update, update 된 data 를 viewModel 동기화
   Future<void> updateBookMark() async {
     bool updateResult = await API.station.updateStationList();
 
-    _stationList = Station.stnList;
-    findBookMark();
+    List<StationData> newBookMarkList = [];
+    for (StationData stn in Station.stnList) {
+      if (stn.isBookMark) newBookMarkList.add(stn);
+    }
+
+    _bookMarkList = newBookMarkList;
     notifyListeners();
   }
 }

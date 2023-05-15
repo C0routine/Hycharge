@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hycharge/model/services/station.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_colors.dart';
@@ -17,14 +18,19 @@ class BottomSheetHeaderWidget extends StatefulWidget {
 class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context.watch<DarkTheme>().isDark;
+    final bool isDark = context
+        .watch<DarkTheme>()
+        .isDark;
     final bottomVM = context.watch<BottomSheetVM>();
 
     /// 충전소 이름
     stationName() {
       return Text(
         bottomVM.stationData?.name ?? '-',
-        style: Theme.of(context).textTheme.titleMedium,
+        style: Theme
+            .of(context)
+            .textTheme
+            .titleMedium,
         overflow: TextOverflow.clip,
       );
     }
@@ -33,17 +39,26 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
     stationAddress() {
       return Text(
         bottomVM.getStationAddress(),
-        style: Theme.of(context).textTheme.bodySmall,
+        style: Theme
+            .of(context)
+            .textTheme
+            .bodySmall,
         overflow: TextOverflow.clip,
       );
     }
 
     /// 충전소 북마크
     bookMark() {
+      bool isFavorite = bottomVM.stationData?.isBookMark ?? false;
       return Material(
         shape: const CircleBorder(),
         child: InkWell(
-          onTap: () {},
+          onTap: (){
+
+          bottomVM.favoriteAdd(bottomVM.stationData?.stationId ?? '');
+          print(bottomVM.stationData?.isBookMark);
+
+        },
           customBorder: const CircleBorder(),
           child: Container(
             decoration: BoxDecoration(
@@ -51,7 +66,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
               color: AppColor.backgroundBlur(isDark),
             ),
             padding: EdgeInsets.all(6.w),
-            child: Icon(Icons.bookmark_add_outlined, size: 26.w),
+            child: Icon(isFavorite ? Icons.favorite : Icons.favorite_outline_rounded, size: 26.w),
           ),
         ),
       );
@@ -71,9 +86,16 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
           children: [
             Text(
               statusData,
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.enableColor, fontSize: 14.sp),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(color: AppColor.enableColor, fontSize: 14.sp),
             ),
-            Text(status, style: Theme.of(context).textTheme.bodySmall)
+            Text(status, style: Theme
+                .of(context)
+                .textTheme
+                .bodySmall)
           ],
         ),
       );
@@ -95,7 +117,11 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('길 찾기', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.white)),
+                    Text('길 찾기', style: Theme
+                        .of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: AppColor.white)),
                     Padding(
                       padding: EdgeInsets.only(left: 5.w),
                       child: Icon(Icons.map_outlined, color: AppColor.white, size: 26.w),

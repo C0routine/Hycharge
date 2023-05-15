@@ -1,4 +1,7 @@
 class StationData {
+  /// Only BookMark Check
+  bool isBookMark = false;
+
   /// 충전소 관리번호
   String? stationId;
 

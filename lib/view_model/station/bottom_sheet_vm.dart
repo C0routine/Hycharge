@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hycharge/model/services/station.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:hycharge/model/station/station_data.dart';
@@ -126,6 +128,24 @@ class BottomSheetVM extends ChangeNotifier {
     }
 
     return schedule;
+  }
+
+  Future<void> favoriteAdd(String stationId) async {
+    final SharedPreferences storage = await SharedPreferences.getInstance();
+    List<String> bookMarkList = storage.getStringList('bookmark') ?? [];
+
+    for (int stn = 0; stn < Station.stnList.length; stn++) {
+      if (Station.stnList[stn].stationId == stationId) {
+        Station.stnList[stn].isBookMark = true;
+
+        Set<String> newBookMarkList = bookMarkList.toSet();
+        newBookMarkList.add(stationId);
+        await storage.setStringList('bookmark', newBookMarkList.toList());
+        notifyListeners();
+
+        break;
+      }
+    }
   }
 
   // Bottom Sheet Mode, Full Mode 전환 (Animation)
