@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hycharge/view/screens/bookmark.dart';
+import 'package:hycharge/view/screens/favorite.dart';
 import 'package:hycharge/view/screens/settings.dart';
 import 'package:hycharge/view/screens/station_map.dart';
 import 'package:hycharge/view/widgets/global/custom_navigation_bar.dart';
@@ -39,7 +39,7 @@ class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
             controller: tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: const [
-              BookMark(),
+              Favorite(),
               StationMap(),
               Settings(),
             ],

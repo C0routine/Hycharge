@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
 import 'package:hycharge/view/screens/root_screen.dart';
-import 'package:hycharge/view/screens/bookmark.dart';
+import 'package:hycharge/view/screens/favorite.dart';
 import 'package:hycharge/view/screens/settings.dart';
 import 'package:hycharge/view/screens/station_map.dart';
 

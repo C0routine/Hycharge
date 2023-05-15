@@ -130,17 +130,37 @@ class BottomSheetVM extends ChangeNotifier {
     return schedule;
   }
 
-  Future<void> favoriteAdd(String stationId) async {
+  /// 자주가는 충전소 제거
+  Future<void> favoriteRemove() async {
     final SharedPreferences storage = await SharedPreferences.getInstance();
-    List<String> bookMarkList = storage.getStringList('bookmark') ?? [];
+    List<String> favoriteList = storage.getStringList('favorite') ?? [];
 
     for (int stn = 0; stn < Station.stnList.length; stn++) {
-      if (Station.stnList[stn].stationId == stationId) {
-        Station.stnList[stn].isBookMark = true;
+      if (Station.stnList[stn].stationId == _stationData!.stationId!) {
+        Station.stnList[stn].isFavorite = false;
 
-        Set<String> newBookMarkList = bookMarkList.toSet();
-        newBookMarkList.add(stationId);
-        await storage.setStringList('bookmark', newBookMarkList.toList());
+        Set<String> newFavoriteList = favoriteList.toSet();
+        newFavoriteList.remove(_stationData!.stationId!);
+        await storage.setStringList('favorite', newFavoriteList.toList());
+        notifyListeners();
+
+        break;
+      }
+    }
+  }
+
+  /// 자주가는 충전소 추가
+  Future<void> favoriteAdd() async {
+    final SharedPreferences storage = await SharedPreferences.getInstance();
+    List<String> favoriteList = storage.getStringList('favorite') ?? [];
+
+    for (int stn = 0; stn < Station.stnList.length; stn++) {
+      if (Station.stnList[stn].stationId == _stationData!.stationId!) {
+        Station.stnList[stn].isFavorite = true;
+
+        Set<String> newFavoriteList = favoriteList.toSet();
+        newFavoriteList.add(_stationData!.stationId!);
+        await storage.setStringList('favorite', newFavoriteList.toList());
         notifyListeners();
 
         break;

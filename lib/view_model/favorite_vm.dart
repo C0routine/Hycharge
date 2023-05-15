@@ -5,10 +5,10 @@ import 'package:hycharge/model/services/api.dart';
 import 'package:hycharge/model/services/station.dart';
 import 'package:hycharge/model/station/station_data.dart';
 
-class BookMarkVM extends ChangeNotifier {
-  List<StationData?> _bookMarkList = [];
+class FavoriteVM extends ChangeNotifier {
+  List<StationData?> _favoriteList = [];
 
-  List<StationData?> get bookMarkList => _bookMarkList;
+  List<StationData?> get favoriteList => _favoriteList;
 
   /// 충전소 운영상태
   String getOperateStatus(StationData? stationData) {
@@ -42,36 +42,41 @@ class BookMarkVM extends ChangeNotifier {
     return '${stationData!.waitingVehicle}대';
   }
 
-  Future<void> removeBookMark(String stationId) async {
+  // 자주가는 충전소 제거
+  Future<void> removeFavorite(String stationId) async {
     final SharedPreferences storage = await SharedPreferences.getInstance();
-    List<String> bookMarkList = storage.getStringList('bookmark') ?? [];
+    List<String> favoriteList = storage.getStringList('favorite') ?? [];
 
-    if (bookMarkList.isEmpty) return;
+    if (favoriteList.isEmpty) return;
 
-    for (int stn = 0; stn < Station.stnList.length; stn++) {
-      if (Station.stnList[stn].stationId == stationId) {
-        Station.stnList[stn].isBookMark = false;
+    for (StationData stn in Station.stnList) {
+      if (stn.stationId == stationId) {
+        stn.isFavorite = false;
+
+        Set<String> newFavoriteList = favoriteList.toSet();
+        newFavoriteList.remove(stationId);
+        await storage.setStringList('favorite', newFavoriteList.toList());
+        await updateFavorite();
+
         break;
       }
     }
-
-    Set<String> newBookMarkList = bookMarkList.toSet();
-    newBookMarkList.remove(stationId);
-    await storage.setStringList('bookmark', newBookMarkList.toList());
-
-    await updateBookMark();
   }
 
-  // 충전소 정보 update, update 된 data 를 viewModel 동기화
-  Future<void> updateBookMark() async {
+  // 충전소 정보 update, update 된 data 에서 자주가는 충전소 data 필터
+  Future<void> updateFavorite() async {
     bool updateResult = await API.station.updateStationList();
 
-    List<StationData> newBookMarkList = [];
+    List<StationData> newFavoriteList = [];
+
     for (StationData stn in Station.stnList) {
-      if (stn.isBookMark) newBookMarkList.add(stn);
+      if (stn.isFavorite) newFavoriteList.add(stn);
     }
 
-    _bookMarkList = newBookMarkList;
+    final SharedPreferences storage = await SharedPreferences.getInstance();
+    List<String> favoriteList = storage.getStringList('favorite') ?? [];
+
+    _favoriteList = newFavoriteList;
     notifyListeners();
   }
 }

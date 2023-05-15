@@ -53,9 +53,9 @@ class Station {
     // 실시간 정보(상세 정보) 값이 없는 station
     List<StationData> emptyDetailsList = [];
 
-    // BookMark data
+    // Favorite 된 station id data
     final SharedPreferences storage = await SharedPreferences.getInstance();
-    List<String> bookMarkList = storage.getStringList('bookmark') ?? [];
+    List<String> favoriteList = storage.getStringList('favorite') ?? [];
 
     // 동기화 되지 않는 데이터 목록 필터링
     for (int info = 0; info < infoList.length; info++) {
@@ -64,12 +64,14 @@ class Station {
 
       // 먼저 충전소 운영 정보 push, 실시간 정보 보다 많음
       if (infoList[info].stationId != null) {
-        for (int mark = 0; mark > bookMarkList.length; mark++) {
-          if (infoList[info].stationId == bookMarkList[mark]) {
-            infoList[info].isBookMark = true;
+        // Favorite 된 station 인지 확인.
+        for (String fav in favoriteList) {
+          if (infoList[info].stationId == fav) {
+            infoList[info].isFavorite = true;
             break;
           }
         }
+
         stationList.add(infoList[info]);
       }
 

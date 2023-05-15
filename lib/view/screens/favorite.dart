@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hycharge/app/app_colors.dart';
 import 'package:hycharge/app/app_style.dart';
-import 'package:hycharge/view_model/bookmark_vm.dart';
+import 'package:hycharge/view_model/favorite_vm.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
 import 'package:provider/provider.dart';
 
-class BookMark extends StatefulWidget {
-  const BookMark({super.key});
+class Favorite extends StatefulWidget {
+  const Favorite({super.key});
 
   @override
-  State<StatefulWidget> createState() => BookMarkState();
+  State<StatefulWidget> createState() => FavoriteState();
 }
 
-class BookMarkState extends State<BookMark> {
+class FavoriteState extends State<Favorite> {
   @override
   void initState() {
     super.initState();
     //TODO Storage get
-    context.read<BookMarkVM>().updateBookMark();
-    print('init BookMark Screen');
+    context.read<FavoriteVM>().updateFavorite();
+    print('init Favorite Screen');
   }
 
   @override
   Widget build(BuildContext context) {
     final bool isDark = context.watch<DarkTheme>().isDark;
-    final vm = context.watch<BookMarkVM>();
+    final vm = context.watch<FavoriteVM>();
 
     /// 충전소 이름
     stationName(String? stationName) {
@@ -46,11 +46,11 @@ class BookMarkState extends State<BookMark> {
     }
 
     /// 충전소 북마크
-    bookMarkIcon(String stationId) {
+    favoriteIcon(String stationId) {
       return Material(
         shape: const CircleBorder(),
         child: InkWell(
-          onTap: () => vm.removeBookMark(stationId),
+          onTap: () => vm.removeFavorite(stationId),
           customBorder: const CircleBorder(),
           child: Container(
             decoration: BoxDecoration(
@@ -58,7 +58,7 @@ class BookMarkState extends State<BookMark> {
               color: AppColor.backgroundBlur(isDark),
             ),
             padding: EdgeInsets.all(6.w),
-            child: Icon(Icons.bookmark_add_outlined, size: 26.w),
+            child: Icon(Icons.favorite, size: 26.w),
           ),
         ),
       );
@@ -86,16 +86,16 @@ class BookMarkState extends State<BookMark> {
       );
     }
 
-    print('BookMark Screen Render');
+    print('Favorite Screen Render');
     return Padding(
       padding: EdgeInsets.only(top: AppStyle.safeArea.top),
-      child: vm.bookMarkList.isNotEmpty
+      child: vm.favoriteList.isNotEmpty
           ? ListView.builder(
               padding: AppStyle.basicPadding,
-              itemCount: vm.bookMarkList.length,
+              itemCount: vm.favoriteList.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
-                  margin: AppStyle.gapBottom,
+                  margin: index == vm.favoriteList.length-1 ? EdgeInsets.only(bottom: 100.h) : AppStyle.gapBottom,
                   color: AppColor.backgroundBlur(isDark),
                   child: Padding(
                     padding: AppStyle.basicPadding,
@@ -112,13 +112,13 @@ class BookMarkState extends State<BookMark> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    stationName(vm.bookMarkList[index]?.name),
-                                    stationAddress(vm.bookMarkList[index]?.address, vm.bookMarkList[index]?.oldAddress),
+                                    stationName(vm.favoriteList[index]?.name),
+                                    stationAddress(vm.favoriteList[index]?.address, vm.favoriteList[index]?.oldAddress),
                                   ],
                                 ),
                               ),
                             ),
-                            bookMarkIcon(vm.bookMarkList[index]!.stationId!),
+                            favoriteIcon(vm.favoriteList[index]!.stationId!),
                           ],
                         ),
                         Padding(
@@ -127,10 +127,10 @@ class BookMarkState extends State<BookMark> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              statusBox('운영상태', vm.getOperateStatus(vm.bookMarkList[index])),
-                              statusBox('가격/kg', vm.getPrice(vm.bookMarkList[index])),
-                              statusBox('충전가능', vm.getChargePossible(vm.bookMarkList[index])),
-                              statusBox('대기차량', vm.getChargeWaiting(vm.bookMarkList[index])),
+                              statusBox('운영상태', vm.getOperateStatus(vm.favoriteList[index])),
+                              statusBox('가격/kg', vm.getPrice(vm.favoriteList[index])),
+                              statusBox('충전가능', vm.getChargePossible(vm.favoriteList[index])),
+                              statusBox('대기차량', vm.getChargeWaiting(vm.favoriteList[index])),
                             ],
                           ),
                         )

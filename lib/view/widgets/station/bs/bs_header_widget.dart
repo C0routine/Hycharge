@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hycharge/model/services/station.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_colors.dart';
@@ -18,19 +17,14 @@ class BottomSheetHeaderWidget extends StatefulWidget {
 class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context
-        .watch<DarkTheme>()
-        .isDark;
-    final bottomVM = context.watch<BottomSheetVM>();
+    final bool isDark = context.watch<DarkTheme>().isDark;
+    final vm = context.watch<BottomSheetVM>();
 
     /// 충전소 이름
     stationName() {
       return Text(
-        bottomVM.stationData?.name ?? '-',
-        style: Theme
-            .of(context)
-            .textTheme
-            .titleMedium,
+        vm.stationData?.name ?? '-',
+        style: Theme.of(context).textTheme.titleMedium,
         overflow: TextOverflow.clip,
       );
     }
@@ -38,27 +32,22 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
     /// 충전소 주소
     stationAddress() {
       return Text(
-        bottomVM.getStationAddress(),
-        style: Theme
-            .of(context)
-            .textTheme
-            .bodySmall,
+        vm.getStationAddress(),
+        style: Theme.of(context).textTheme.bodySmall,
         overflow: TextOverflow.clip,
       );
     }
 
     /// 충전소 북마크
     bookMark() {
-      bool isFavorite = bottomVM.stationData?.isBookMark ?? false;
+      bool isFavorite = vm.stationData?.isFavorite ?? false;
       return Material(
         shape: const CircleBorder(),
         child: InkWell(
-          onTap: (){
-
-          bottomVM.favoriteAdd(bottomVM.stationData?.stationId ?? '');
-          print(bottomVM.stationData?.isBookMark);
-
-        },
+          onTap: () {
+            print('press');
+            isFavorite ? vm.favoriteRemove() :  vm.favoriteAdd();
+          },
           customBorder: const CircleBorder(),
           child: Container(
             decoration: BoxDecoration(
@@ -86,16 +75,9 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
           children: [
             Text(
               statusData,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(color: AppColor.enableColor, fontSize: 14.sp),
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.enableColor, fontSize: 14.sp),
             ),
-            Text(status, style: Theme
-                .of(context)
-                .textTheme
-                .bodySmall)
+            Text(status, style: Theme.of(context).textTheme.bodySmall)
           ],
         ),
       );
@@ -117,11 +99,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('길 찾기', style: Theme
-                        .of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: AppColor.white)),
+                    Text('길 찾기', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.white)),
                     Padding(
                       padding: EdgeInsets.only(left: 5.w),
                       child: Icon(Icons.map_outlined, color: AppColor.white, size: 26.w),
@@ -143,7 +121,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
           color: AppColor.enableColor,
           borderRadius: AppStyle.borderRadius,
           child: InkWell(
-            onTap: () => bottomVM.callLaunch(),
+            onTap: () => vm.callLaunch(),
             borderRadius: AppStyle.borderRadius,
             child: SizedBox(
               height: 42.h,
@@ -181,10 +159,10 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              statusBox('운영상태', bottomVM.getOperateStatus()),
-              statusBox('가격/kg', bottomVM.getPrice()),
-              statusBox('충전가능', bottomVM.getChargePossible()),
-              statusBox('대기차량', bottomVM.getChargeWaiting()),
+              statusBox('운영상태', vm.getOperateStatus()),
+              statusBox('가격/kg', vm.getPrice()),
+              statusBox('충전가능', vm.getChargePossible()),
+              statusBox('대기차량', vm.getChargeWaiting()),
             ],
           ),
         ),
