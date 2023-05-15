@@ -64,38 +64,81 @@ class BookMarkState extends State<BookMark> {
       );
     }
 
+    /// 충전소 상태 box
+    statusBox(String status, String statusData) {
+      return Container(
+        width: 75.w,
+        height: 75.w,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(width: 3, color: AppColor.enableColor),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              statusData,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColor.enableColor, fontSize: 14.sp),
+            ),
+            Text(status, style: Theme.of(context).textTheme.bodySmall)
+          ],
+        ),
+      );
+    }
+
     print('BookMark Screen Render');
-    return ListView.builder(
-      padding: AppStyle.basicPadding,
-      itemCount: vm.bookMarkList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Card(
-          margin: AppStyle.marginTop,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+    return Padding(
+      padding: EdgeInsets.only(top: AppStyle.safeArea.top),
+      child: ListView.builder(
+        padding: AppStyle.basicPadding,
+        itemCount: vm.bookMarkList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            margin: AppStyle.gapBottom,
+            color: AppColor.backgroundBlur(isDark),
+            child: Padding(
+              padding: AppStyle.basicPadding,
+              child: Column(
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: AppStyle.gapRight,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          stationName(vm.bookMarkList[index]?.name),
-                          stationAddress(vm.bookMarkList[index]?.address, vm.bookMarkList[index]?.oldAddress),
-                        ],
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: AppStyle.gapRight,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              stationName(vm.bookMarkList[index]?.name),
+                              stationAddress(vm.bookMarkList[index]?.address, vm.bookMarkList[index]?.oldAddress),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                      bookMarkIcon(),
+                    ],
                   ),
-                  bookMarkIcon(),
+                  Padding(
+                    padding: AppStyle.gapTop,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        statusBox('운영상태', vm.getOperateStatus(vm.bookMarkList[index])),
+                        statusBox('가격/kg', vm.getPrice(vm.bookMarkList[index])),
+                        statusBox('충전가능', vm.getChargePossible(vm.bookMarkList[index])),
+                        statusBox('대기차량', vm.getChargeWaiting(vm.bookMarkList[index])),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            ],
-          ),
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 }

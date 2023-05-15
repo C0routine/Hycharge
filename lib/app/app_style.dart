@@ -31,7 +31,7 @@ class AppStyle {
   static EdgeInsetsGeometry gapBottom = EdgeInsets.only(bottom: 16.h);
 
   /// 기본 ui 간 top 간격
-  static EdgeInsetsGeometry gapTop = EdgeInsets.only(bottom: 16.h);
+  static EdgeInsetsGeometry gapTop = EdgeInsets.only(top: 16.h);
 
   /// title 과 body margin, top 간격
   static EdgeInsetsGeometry gapTitle = EdgeInsets.only(top: 5.h);

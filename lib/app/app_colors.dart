@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AppColor {
   // App 에서 사용하는 모든 Color 정의.
   static const Color white = Color(0xFFFFFFFF);
-  static const Color blurWhite = Color(0xFFEEEEEE);
+  static const Color blurWhite = Color(0xFFF3F3F3);
   static const Color black = Color(0xFF202020);
   static const Color blurBlack = Color(0xFF404040);
 
