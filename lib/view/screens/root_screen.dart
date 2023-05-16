@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:hycharge/view/screens/favorite.dart';
 import 'package:hycharge/view/screens/settings.dart';
 import 'package:hycharge/view/screens/station_map.dart';
 import 'package:hycharge/view/widgets/global/custom_navigation_bar.dart';
 import 'package:hycharge/view/widgets/station/station_bottom_sheet.dart';
+import 'package:hycharge/view_model/navigation_vm.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -14,22 +16,22 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
-  late TabController tabController;
-
   @override
   void initState() {
-    tabController = TabController(length: 3, vsync: this, initialIndex: 1);
+    context.read<NavigationVM>().initTabController(TabController(length: 3, vsync: this, initialIndex: 1));
     super.initState();
   }
 
   @override
   void dispose() {
-    tabController.removeListener(() {});
+    context.read<NavigationVM>().tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final tabController = context.read<NavigationVM>().tabController;
+
     return Scaffold(
       // extendBody: true,
       body: Stack(
@@ -44,7 +46,7 @@ class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
               Settings(),
             ],
           ),
-          CustomNavigationBar(tabController: tabController),
+          const CustomNavigationBar(),
 
           // bottomSheet 가 Navigation bar 보다 index 가 우선.
           const StationBottomSheet(),

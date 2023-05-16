@@ -59,6 +59,14 @@ class BottomSheetVM extends ChangeNotifier {
     return '${_stationData!.waitingVehicle}대';
   }
 
+  /// 충전소 길찾기
+  Future<void> directionStation() async {
+    if ((_stationData?.name != null) || (_stationData?.address != null) || (_stationData?.oldAddress != null)) {
+      //TODO Direction
+    }
+    return;
+  }
+
   /// 충전소 전화 걸기
   Future<void> callLaunch() async {
     if (_stationData?.number == null) return;
@@ -135,6 +143,8 @@ class BottomSheetVM extends ChangeNotifier {
     final SharedPreferences storage = await SharedPreferences.getInstance();
     List<String> favoriteList = storage.getStringList('favorite') ?? [];
 
+    if (_stationData?.stationId == null) return;
+
     for (int stn = 0; stn < Station.stnList.length; stn++) {
       if (Station.stnList[stn].stationId == _stationData!.stationId!) {
         Station.stnList[stn].isFavorite = false;
@@ -153,6 +163,8 @@ class BottomSheetVM extends ChangeNotifier {
   Future<void> favoriteAdd() async {
     final SharedPreferences storage = await SharedPreferences.getInstance();
     List<String> favoriteList = storage.getStringList('favorite') ?? [];
+
+    if (_stationData?.stationId == null) return;
 
     for (int stn = 0; stn < Station.stnList.length; stn++) {
       if (Station.stnList[stn].stationId == _stationData!.stationId!) {

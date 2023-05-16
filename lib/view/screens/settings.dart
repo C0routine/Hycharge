@@ -24,7 +24,7 @@ class _Settings extends State<Settings> // with AutomaticKeepAliveClientMixin<Se
     print('Settings Screen Render');
     return Container(
       color: Colors.transparent,
-      child: Center(
+      child: const Center(
         child: Text('Settings Page'),
       ),
     );

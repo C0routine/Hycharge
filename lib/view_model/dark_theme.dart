@@ -8,7 +8,7 @@ class DarkTheme with ChangeNotifier {
   bool get isDark => _isDarkMode;
 
   /// [isDark] - bool type, DarkMode 이면 true, 아니면 false
-  void changeMode(bool isDark) {
+  void changeDarkMode(bool isDark) {
     _isDarkMode = isDark;
     notifyListeners();
   }

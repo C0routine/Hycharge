@@ -19,9 +19,8 @@ class StationBottomSheet extends StatefulWidget {
 class _StationBottomSheet extends State<StationBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    final top = MediaQuery.of(context).viewPadding.top;
-    final bool isDark = context.watch<DarkTheme>().isDark;
     final vm = context.watch<BottomSheetVM>();
+    final bool isDark = context.watch<DarkTheme>().isDark;
 
     AnimatedContainer bsHandlerWidget() {
       return AnimatedContainer(
@@ -69,7 +68,7 @@ class _StationBottomSheet extends State<StationBottomSheet> {
             curve: Curves.easeOutCubic,
             duration: const Duration(milliseconds: 400),
             padding: EdgeInsets.only(
-              top: vm.bsMode ? 0 : (top + 5.h),
+              top: vm.bsMode ? 0 : (AppStyle.safeArea.top + 5.h),
               bottom: AppStyle.safeArea.bottom,
               left: 16.w,
               right: 16.w,

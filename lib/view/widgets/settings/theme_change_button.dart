@@ -22,7 +22,7 @@ class _ThemeChangeButton extends State<ThemeChangeButton> {
       child: Material(
         child: InkWell(
           onTap: () {
-            context.read<DarkTheme>().changeMode(!isDarkMode);
+            context.read<DarkTheme>().changeDarkMode(!isDarkMode);
             // TODO 바꾼 모드에 대해서 내부 저장소에 저장이 필요.
           },
           child: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),

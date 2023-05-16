@@ -5,29 +5,20 @@ import 'package:provider/provider.dart';
 import 'package:hycharge/app/app_colors.dart';
 import 'package:hycharge/app/app_style.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
+import 'package:hycharge/view_model/navigation_vm.dart';
 
 class CustomNavigationBar extends StatefulWidget {
-  const CustomNavigationBar({super.key, required this.tabController});
-
-  final TabController tabController;
+  const CustomNavigationBar({super.key});
 
   @override
   State<StatefulWidget> createState() => _CustomTabBar();
 }
 
 class _CustomTabBar extends State<CustomNavigationBar> {
-  int focusIndex = 1;
-
-  @override
-  void initState() {
-    widget.tabController.addListener(() => setState(() => focusIndex = widget.tabController.index));
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<NavigationVM>();
     final isDark = context.watch<DarkTheme>().isDark;
-    final bottom = MediaQuery.of(context).viewPadding.bottom;
 
     tabAnimatedWidget(int index, IconData iconData) {
       return SizedBox(
@@ -35,14 +26,14 @@ class _CustomTabBar extends State<CustomNavigationBar> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Icon(iconData, color: index == focusIndex ? AppColor.enableColor : AppColor.disableColor),
+            Icon(iconData, color: index == vm.screenIndex ? AppColor.enableColor : AppColor.disableColor),
             AnimatedContainer(
               duration: const Duration(milliseconds: 700),
               curve: Curves.decelerate,
-              height: focusIndex == index ? 41.w : 0,
-              width: focusIndex == index ? 0.24.sw : 0,
+              height: vm.screenIndex == index ? 41.w : 0,
+              width: vm.screenIndex == index ? 0.24.sw : 0,
               decoration: BoxDecoration(
-                color: focusIndex == index ? AppColor.enableColor.withOpacity(0.25) : Colors.transparent,
+                color: vm.screenIndex == index ? AppColor.enableColor.withOpacity(0.25) : Colors.transparent,
                 borderRadius: AppStyle.hardBorderRadius,
               ),
             ),
@@ -53,7 +44,7 @@ class _CustomTabBar extends State<CustomNavigationBar> {
 
     return Container(
       height: 55.w,
-      margin: EdgeInsets.only(bottom: bottom, left: 0.115.sw, right: 0.115.sw),
+      margin: EdgeInsets.only(bottom: AppStyle.safeArea.bottom, left: 0.115.sw, right: 0.115.sw),
       padding: EdgeInsets.symmetric(horizontal: 0.035.sw, vertical: 5.w),
       decoration: BoxDecoration(
         color: AppColor.background(isDark),
@@ -62,7 +53,8 @@ class _CustomTabBar extends State<CustomNavigationBar> {
       ),
       child: TabBar(
         // isScrollable: true,
-        controller: widget.tabController,
+        onTap: (int index) => vm.changeScreen(index),
+        controller: vm.tabController,
         indicator: const UnderlineTabIndicator(borderSide: BorderSide.none),
         indicatorWeight: 0,
         dividerColor: Colors.transparent,

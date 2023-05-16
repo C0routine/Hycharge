@@ -17,8 +17,8 @@ class LocationTrackingButton extends StatefulWidget {
 class _LocationTrackingButton extends State<LocationTrackingButton> {
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context.watch<DarkTheme>().isDark;
     final mapVM = context.read<MapVM>();
+    final bool isDark = context.watch<DarkTheme>().isDark;
 
     return Material(
       shape: const CircleBorder(),

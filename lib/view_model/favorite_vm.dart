@@ -65,16 +65,13 @@ class FavoriteVM extends ChangeNotifier {
 
   // 충전소 정보 update, update 된 data 에서 자주가는 충전소 data 필터
   Future<void> updateFavorite() async {
-    bool updateResult = await API.station.updateStationList();
+    await API.station.updateStationList();
 
     List<StationData> newFavoriteList = [];
 
     for (StationData stn in Station.stnList) {
       if (stn.isFavorite) newFavoriteList.add(stn);
     }
-
-    final SharedPreferences storage = await SharedPreferences.getInstance();
-    List<String> favoriteList = storage.getStringList('favorite') ?? [];
 
     _favoriteList = newFavoriteList;
     notifyListeners();

@@ -14,6 +14,9 @@ class StationMap extends StatefulWidget {
 
 class _StationMapState extends State<StationMap> with AutomaticKeepAliveClientMixin {
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     print('StationMap Screen Render!');
@@ -31,7 +34,4 @@ class _StationMapState extends State<StationMap> with AutomaticKeepAliveClientMi
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

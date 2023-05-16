@@ -22,9 +22,9 @@ class NaverMapWidget extends StatefulWidget {
 class _NaverMapWidget extends State<NaverMapWidget> {
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context.watch<DarkTheme>().isDark;
     final mapVM = context.read<MapVM>();
     final bottomSheetVM = context.read<BottomSheetVM>();
+    final bool isDark = context.watch<DarkTheme>().isDark;
 
     /// Region Marker Setting
     Future<void> setRegionMarker() async {
@@ -39,15 +39,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
                 text: r.totalPrice != 0 ? (r.totalPrice ~/ r.priceFew).toString() : '0', color: AppColor.white, haloColor: AppColor.grey),
             captionAligns: [NAlign.center],
             icon: markerIcon)
-          ..setOnTapListener((overlay) => {
-                print(r.fullName),
-                mapVM.mapController.updateCamera(
-                  NCameraUpdate.scrollAndZoomTo(
-                    target: r.nLatLng,
-                    zoom: 7.5,
-                  )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 700)),
-                ),
-              });
+          ..setOnTapListener((overlay) => mapVM.markerOnTap(r.nLatLng, false));
 
         mapVM.mapController.addOverlay(regionMarker);
 
@@ -85,14 +77,8 @@ class _NaverMapWidget extends State<NaverMapWidget> {
           caption: NOverlayCaption(text: '${stn.possibleVehicle ?? '??'}', color: AppColor.white, haloColor: AppColor.grey),
           captionAligns: [NAlign.center],
         )..setOnTapListener((overlay) => {
-              print(stn.timeStamp),
+              mapVM.markerOnTap(NLatLng(stn.latitude!, stn.longitude!), true),
               bottomSheetVM.updateBottomSheet(stn),
-              mapVM.mapController.updateCamera(
-                NCameraUpdate.scrollAndZoomTo(
-                  target: NLatLng(stn.latitude!, stn.longitude!),
-                  zoom: 14,
-                )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 700)),
-              ),
             });
 
         mapVM.mapController.addOverlay(stationMarker);

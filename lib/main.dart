@@ -9,6 +9,7 @@ import 'package:hycharge/model/services/network.dart';
 import 'package:hycharge/model/services/station.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
 import 'package:hycharge/view_model/favorite_vm.dart';
+import 'package:hycharge/view_model/navigation_vm.dart';
 import 'package:hycharge/view_model/station/map_vm.dart';
 import 'package:hycharge/view_model/station/bottom_sheet_vm.dart';
 
@@ -34,6 +35,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DarkTheme()),
+        ChangeNotifierProvider(create: (_) => NavigationVM()),
         ChangeNotifierProvider(create: (_) => MapVM()),
         ChangeNotifierProvider(create: (_) => BottomSheetVM()),
         ChangeNotifierProvider(create: (_) => FavoriteVM()),

@@ -74,4 +74,14 @@ class MapVM extends ChangeNotifier {
 
     return result;
   }
+
+  /// marker tap 시 animation
+  void markerOnTap(NLatLng nLatLng, bool isStation) {
+    _mapController.updateCamera(
+      NCameraUpdate.scrollAndZoomTo(
+        target: nLatLng,
+        zoom: isStation ? 14 : 7.5,
+      )..setAnimation(animation: NCameraAnimation.fly, duration: const Duration(milliseconds: 900)),
+    );
+  }
 }

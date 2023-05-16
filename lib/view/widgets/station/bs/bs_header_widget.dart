@@ -17,8 +17,8 @@ class BottomSheetHeaderWidget extends StatefulWidget {
 class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context.watch<DarkTheme>().isDark;
     final vm = context.watch<BottomSheetVM>();
+    final bool isDark = context.watch<DarkTheme>().isDark;
 
     /// 충전소 이름
     stationName() {
@@ -38,24 +38,21 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
       );
     }
 
-    /// 충전소 북마크
-    bookMark() {
+    /// 자주가는 충전소
+    favoriteIcon() {
       bool isFavorite = vm.stationData?.isFavorite ?? false;
       return Material(
         shape: const CircleBorder(),
         child: InkWell(
-          onTap: () {
-            print('press');
-            isFavorite ? vm.favoriteRemove() :  vm.favoriteAdd();
-          },
+          onTap: () => isFavorite ? vm.favoriteRemove() :  vm.favoriteAdd(),
           customBorder: const CircleBorder(),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColor.backgroundBlur(isDark),
+              color: Colors.transparent,
             ),
             padding: EdgeInsets.all(6.w),
-            child: Icon(isFavorite ? Icons.favorite : Icons.favorite_outline_rounded, size: 26.w),
+            child: Icon(isFavorite ? Icons.favorite : Icons.favorite_outline_rounded, color: AppColor.enableColor, size: 26.w),
           ),
         ),
       );
@@ -151,7 +148,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
                 ),
               ),
             ),
-            bookMark(),
+            favoriteIcon(),
           ],
         ),
         Padding(
