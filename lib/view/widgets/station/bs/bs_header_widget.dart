@@ -44,7 +44,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
       return Material(
         shape: const CircleBorder(),
         child: InkWell(
-          onTap: () => isFavorite ? vm.favoriteRemove() :  vm.favoriteAdd(),
+          onTap: () => isFavorite ? vm.favoriteRemove() : vm.favoriteAdd(),
           customBorder: const CircleBorder(),
           child: Container(
             decoration: const BoxDecoration(
@@ -80,6 +80,65 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
       );
     }
 
+    /// 충전소 길찾기 선택 dialog
+    selectDirectionApp() {
+      directionApp(String assets, String appName) {
+        return GestureDetector(
+          onTap: () => vm.directionStation(appName == '티맵'
+              ? 'tmap'
+              : appName == '네이버맵'
+                  ? 'naver'
+                  : 'kakao'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: AppStyle.borderRadius,
+                child: Image.asset(assets, width: 80.w, height: 80.w),
+              ),
+              Padding(padding: AppStyle.gapTitle, child: Text(appName, style: Theme.of(context).textTheme.bodyMedium)),
+            ],
+          ),
+        );
+      }
+
+      return showDialog(
+          context: context,
+          builder: (context) {
+            final bool isDark = context.watch<DarkTheme>().isDark;
+            return Dialog(
+              child: Container(
+                padding: AppStyle.basicPadding,
+                decoration: BoxDecoration(
+                  color: AppColor.background(isDark),
+                  borderRadius: AppStyle.borderRadius,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '안내 받을 앱을 선택해주세요.',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    Padding(
+                      padding: AppStyle.gapTop,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          directionApp('assets/icon/tmap_icon.png', '티맵'),
+                          directionApp('assets/icon/naver_icon.png', '네이버맵'),
+                          directionApp('assets/icon/kakao_icon.png', '카카오맵'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+    }
+
     /// 충전소 길찾기
     directions() {
       return Expanded(
@@ -88,7 +147,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
           color: AppColor.enableColor,
           borderRadius: AppStyle.borderRadius,
           child: InkWell(
-            onTap: () {},
+            onTap: () => selectDirectionApp(),
             borderRadius: AppStyle.borderRadius,
             child: SizedBox(
               height: 42.h,

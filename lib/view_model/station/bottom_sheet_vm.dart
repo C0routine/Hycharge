@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hycharge/model/services/station.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:hycharge/model/station/station_data.dart';
@@ -60,11 +63,43 @@ class BottomSheetVM extends ChangeNotifier {
   }
 
   /// 충전소 길찾기
-  Future<void> directionStation() async {
-    if ((_stationData?.name != null) || (_stationData?.address != null) || (_stationData?.oldAddress != null)) {
-      //TODO Direction
+  Future<void> directionStation(String appName) async {
+    /// 충전소 길찾기 url scheme
+    Future<void> directionUrlScheme(String url, String ios, String and) async {
+      try {
+        await launchUrlString(url);
+      } catch (err) {
+        Platform.isIOS ? await launchUrlString(ios) : await launchUrlString(and);
+      }
     }
-    return;
+
+    if (_stationData?.name != null) {
+      final double lat = _stationData!.latitude!;
+      final double lng = _stationData!.longitude!;
+
+      // naver map
+      final stationName = Uri.encodeComponent(_stationData!.name!);
+
+      final Map<String, Map<String, String>> urlScheme = {
+        'naver': {
+          'url': 'nmap://navigation?dlat=$lat&dlng=$lng&dname=$stationName&appname=com.hycharge.app',
+          'ios': 'http://itunes.apple.com/app/id311867728',
+          'and': 'market://details?id=com.nhn.android.nmap',
+        },
+        'kakao': {
+          'url': 'kakaomap://route?ep=$lat,$lng&by=CAR',
+          'ios': 'http://itunes.apple.com/app/id304608425',
+          'and': 'market://details?id=net.daum.android.map',
+        },
+        'tmap': {
+          'url': 'tmap://',
+          'ios': 'http://itunes.apple.com/app/id431589174',
+          'and': 'market://details?id=com.skt.tmap.ku',
+        },
+      };
+
+      await directionUrlScheme(urlScheme[appName]!['url']!, urlScheme[appName]!['ios']!, urlScheme[appName]!['and']!);
+    }
   }
 
   /// 충전소 전화 걸기
