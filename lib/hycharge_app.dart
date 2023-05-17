@@ -26,10 +26,8 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
     final instance = PlatformDispatcher.instance;
 
     instance.onPlatformBrightnessChanged = () {
-      // TODO 추후 Release print Remove or Comments
+      // TODO Remove print comments
       print('Current Theme : ${instance.platformBrightness == Brightness.dark ? 'Dark' : 'Light'}');
-
-      // TODO User Custom Theme 를 위해서 User 가 지정한 Theme(내부 저장소) 가 있다면 바꾸지 않도록 분기(if) 필요.
       context.read<DarkTheme>().changeDarkMode(instance.platformBrightness == Brightness.dark);
     };
   }
@@ -54,6 +52,9 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
 
           // App Theme
           theme: context.watch<DarkTheme>().isDark ? AppTheme.dark() : AppTheme.light(),
+          // theme: AppTheme.light(),
+          // darkTheme: AppTheme.dark(),
+          // themeMode: Provider.of<DarkTheme>(context).getTheme,
 
           // Debug 모양 가리기
           debugShowCheckedModeBanner: false,

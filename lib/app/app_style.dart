@@ -15,6 +15,12 @@ class AppStyle {
   // SafeArea 간격
   static EdgeInsets safeArea = EdgeInsets.zero;
 
+  /// ui 간 bottom small 간격
+  static EdgeInsetsGeometry gapSmallBottom = EdgeInsets.only(bottom: 5.h);
+
+  /// ui 간 top small 간격
+  static EdgeInsetsGeometry gapTopBottom = EdgeInsets.only(top: 5.h);
+
   /// ui 간 vertical 간격
   static EdgeInsetsGeometry gapVertical = EdgeInsets.symmetric(vertical: 16.h);
 

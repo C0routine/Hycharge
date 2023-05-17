@@ -27,7 +27,7 @@ class FavoriteState extends State<Favorite> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = context.watch<DarkTheme>().isDark;
+    final bool isDark = context.read<DarkTheme>().isDark;
     final vm = context.watch<FavoriteVM>();
     final mapVM = context.watch<MapVM>();
     final bsVM = context.watch<BottomSheetVM>();

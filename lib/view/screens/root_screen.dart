@@ -32,6 +32,7 @@ class _RootScreen extends State<RootScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final tabController = context.read<NavigationVM>().tabController;
 
+    print('Root Screen Render');
     return Scaffold(
       // extendBody: true,
       body: Stack(

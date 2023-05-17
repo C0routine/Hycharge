@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hycharge/app/app_style.dart';
+import 'package:hycharge/view/widgets/settings/app_version.dart';
+import 'package:hycharge/view/widgets/settings/theme_setting.dart';
+import 'package:hycharge/view_model/dark_theme.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -7,25 +13,34 @@ class Settings extends StatefulWidget {
   State<StatefulWidget> createState() => _Settings();
 }
 
-class _Settings extends State<Settings> // with AutomaticKeepAliveClientMixin<Settings>
-{
-  // @override
-  // bool get wantKeepAlive => true;
+class _Settings extends State<Settings> {
 
-  @override
-  void initState() {
-    super.initState();
-    // print('init Settings');
-  }
+  // push notification
+  // station notice
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context);
+
+    Divider divider() {
+      return Divider(
+        height: 0,
+        indent: 16.w,
+        endIndent: 16.w,
+        thickness: 1.h,
+        // color: AppColor.background(!isDark),
+      );
+    }
+
     print('Settings Screen Render');
     return Container(
-      color: Colors.transparent,
-      child: const Center(
-        child: Text('Settings Page'),
+      margin: EdgeInsets.only(top: AppStyle.safeArea.top),
+      child: Column(
+        children: [
+          ThemeSetting(),
+          divider(),
+          AppVersion(),
+          divider(),
+        ],
       ),
     );
   }
