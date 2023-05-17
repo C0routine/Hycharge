@@ -51,10 +51,8 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
           routerConfig: router,
 
           // App Theme
+          // TODO Theme.of(context) 를 이용시 render 가 많이 되는 문제가 있음.
           theme: context.watch<DarkTheme>().isDark ? AppTheme.dark() : AppTheme.light(),
-          // theme: AppTheme.light(),
-          // darkTheme: AppTheme.dark(),
-          // themeMode: Provider.of<DarkTheme>(context).getTheme,
 
           // Debug 모양 가리기
           debugShowCheckedModeBanner: false,

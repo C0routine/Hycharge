@@ -18,7 +18,6 @@ class _ThemeSetting extends State<ThemeSetting> {
   Widget build(BuildContext context) {
     final vm = context.watch<DarkTheme>();
 
-    print('Render Theme Setting');
     return Padding(
       padding: AppStyle.basicPadding,
       child: Row(

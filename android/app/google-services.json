@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "695778282180",
+    "firebase_url": "https://hycharge-97c01-default-rtdb.firebaseio.com",
+    "project_id": "hycharge-97c01",
+    "storage_bucket": "hycharge-97c01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695778282180:android:1f46b789f5605b71445791",
+        "android_client_info": {
+          "package_name": "com.hycharge.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695778282180-nucsk7can37njk6p33o0qcdar4n0saqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjvwB9UcOjf7GwZ6sG4fDYzMqEqyS0HGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695778282180-nucsk7can37njk6p33o0qcdar4n0saqv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "695778282180-os4d7e4fad0vft4iq1d5kh68ksknlccp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hycharge.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

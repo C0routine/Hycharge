@@ -6,14 +6,7 @@ class DarkTheme with ChangeNotifier {
   bool _isDarkMode = PlatformDispatcher.instance.platformBrightness == Brightness.dark;
 
   bool get isDark => _isDarkMode;
-
-  ThemeMode _themeMode = ThemeMode.light;
-  ThemeMode get getTheme => _themeMode;
-  setTheme(ThemeMode themeMode){
-    _themeMode = themeMode;
-    notifyListeners();
-  }
-
+  
   /// [isDark] - bool type, DarkMode 이면 true, 아니면 false
   void changeDarkMode(bool isDark) {
     _isDarkMode = isDark;

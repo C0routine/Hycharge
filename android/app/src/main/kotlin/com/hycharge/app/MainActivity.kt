@@ -1,4 +1,4 @@
-package com.example.hycharge
+package com.hycharge.app
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
