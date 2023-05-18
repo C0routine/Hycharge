@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hycharge/view/widgets/settings/push_setting.dart';
-import 'package:hycharge/view_model/settings_vm.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_style.dart';
@@ -18,12 +17,6 @@ class Settings extends StatefulWidget {
 }
 
 class _Settings extends State<Settings> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool isDark = context.watch<DarkTheme>().isDark;

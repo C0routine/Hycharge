@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hycharge/app/app_permission.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SettingsVM extends ChangeNotifier {
   String _appVersion = '1.0.0';
-
+  bool _pushEnable = true;
   bool _notice = true;
 
   bool get notice => _notice;
+
+  bool get pushEnable => _pushEnable;
 
   String get appVersion => _appVersion;
 
@@ -21,6 +24,7 @@ class SettingsVM extends ChangeNotifier {
 
   /// App Push Setting get
   Future<void> getPushSetting() async {
+    _pushEnable = await AppPermission.getPushPermission();
     SharedPreferences storage = await SharedPreferences.getInstance();
     bool? isEnable = storage.getBool('push_notice');
 
