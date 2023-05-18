@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:hycharge/app/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/hycharge_app.dart';
+import 'package:hycharge/app/app_theme.dart';
+import 'package:hycharge/app/app_firebase.dart';
 import 'package:hycharge/model/services/network.dart';
 import 'package:hycharge/model/services/station.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
@@ -23,7 +24,7 @@ Future<void> main() async {
   // Widgets 시스템 초기화 확인 & 초기화
   WidgetsFlutterBinding.ensureInitialized();
   // Firebase 초기화, 설정
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await AppFirebase().initFirebase();
   // Naver map 초기화
   await NaverMapSdk.instance.initialize(clientId: dotenv.env['NAVER_MAP_CLIENT_ID']);
   // 가로 모드 제한.

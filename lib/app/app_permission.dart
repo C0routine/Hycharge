@@ -1,4 +1,5 @@
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 /// 권한 관리
 class AppPermission {
@@ -20,6 +21,23 @@ class AppPermission {
     }
 
     // print('권한 영구 거부 ${locationStatus.isPermanentlyDenied}');
+    return false;
+  }
+
+  static Future<bool> getPushPermission() async {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      return true;
+    }
     return false;
   }
 }
