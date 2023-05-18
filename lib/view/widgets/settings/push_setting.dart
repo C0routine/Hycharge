@@ -23,7 +23,8 @@ class _PushSetting extends State<PushSetting> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<SettingsVM>();
+    final vm = context.read<SettingsVM>();
+    final notice = context.select((SettingsVM value) => value.notice);
     final isDark = context.watch<DarkTheme>().isDark;
 
     return Padding(
@@ -45,8 +46,8 @@ class _PushSetting extends State<PushSetting> {
             child: FittedBox(
               fit: BoxFit.fill,
               child: Switch(
-                value: vm.enablePush,
-                onChanged: (bool enable) => vm.setPushSetting(enable),
+                value: notice,
+                onChanged: (bool enable) => vm.setNoticeTopicSetting(enable),
                 activeTrackColor: AppColor.backgroundBlur(isDark),
                 inactiveTrackColor: AppColor.backgroundBlur(isDark),
                 thumbColor: MaterialStateProperty.resolveWith((states) {

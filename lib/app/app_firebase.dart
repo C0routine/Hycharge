@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:hycharge/firebase_options.dart';
 import 'package:hycharge/app/app_permission.dart';
@@ -19,6 +20,7 @@ class AppFirebase {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen(_firebaseMessageForegroundHandler);
     await getFcmToken();
+    await topicSubscribeSetting();
 
     await AppPermission.getPushPermission();
   }
@@ -52,5 +54,23 @@ class AppFirebase {
     String? fcmToken = await FirebaseMessaging.instance.getToken();
     print('fcmToken : $fcmToken');
     return fcmToken;
+  }
+
+  /// Topic 구독
+  Future<void> topicSubscribeSetting() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+    bool? notice = storage.getBool('push_notice');
+
+    if (notice == false) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('notice');
+      await storage.setBool('push_notice', false);
+      // print('Unsubscribe notice');
+      return;
+    }
+
+    await FirebaseMessaging.instance.subscribeToTopic('notice');
+    await storage.setBool('push_notice', true);
+    // print('Subscribe notice');
+    return;
   }
 }

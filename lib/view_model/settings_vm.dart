@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SettingsVM extends ChangeNotifier {
   String _appVersion = '1.0.0';
-  bool _enablePush = true;
+
+  bool _notice = true;
+
+  bool get notice => _notice;
 
   String get appVersion => _appVersion;
-
-  bool get enablePush => _enablePush;
 
   /// App Version get, setting
   Future<void> getAppVersion() async {
@@ -17,26 +19,34 @@ class SettingsVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// App PushSetting get, setting
+  /// App Push Setting get
   Future<void> getPushSetting() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
-    bool? pushSetting = storage.getBool('notice_push');
+    bool? isEnable = storage.getBool('push_notice');
 
-    if (pushSetting == null) {
-      _enablePush = true;
+    if (isEnable == false) {
+      _notice = false;
       return;
+    } else {
+      _notice = true;
     }
-    _enablePush = pushSetting;
     notifyListeners();
   }
 
-  Future<void> setPushSetting(bool setting) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    storage.setBool('notice_push', setting);
-
-    //TODO Firebase Messaging Setting
-
-    _enablePush = setting;
+  /// App Push Notice Topic Setting
+  Future<void> setNoticeTopicSetting(bool isEnable) async {
+    _notice = isEnable;
     notifyListeners();
+
+    SharedPreferences storage = await SharedPreferences.getInstance();
+    await storage.setBool('push_notice', isEnable);
+
+    if (isEnable) {
+      await FirebaseMessaging.instance.subscribeToTopic('notice');
+      // print('Subscribe notice');
+    } else {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('notice');
+      // print('Unsubscribe notice');
+    }
   }
 }

@@ -20,7 +20,7 @@ class _AppVersion extends State<AppVersion> {
 
   @override
   Widget build(BuildContext context) {
-    final appVersion = context.read<SettingsVM>().appVersion;
+    final appVersion = context.select((SettingsVM value) => value.appVersion);
 
     return Padding(
       padding: AppStyle.basicPadding,
