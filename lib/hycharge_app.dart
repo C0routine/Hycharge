@@ -1,10 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hycharge/app/app_style.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/router.dart';
+import 'package:hycharge/app/app_style.dart';
 import 'package:hycharge/app/app_theme.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
 
@@ -20,9 +21,8 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    // 3.7.10 deprecated WidgetsBinding.instance.window
-    // use PlatformDispatcher or View.of(context)
-    // System Dark & Light Mode Change Listener
+    // 3.7.10 WidgetsBinding.instance.window deprecated, use PlatformDispatcher or View.of(context)
+    // System Theme Change Listener (Dark & Light)
     final instance = PlatformDispatcher.instance;
 
     instance.onPlatformBrightnessChanged = () {
@@ -34,6 +34,8 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // 가로 모드 제한.
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return ScreenUtilInit(
       // 디자인 size width, height
       designSize: const Size(393, 852),
