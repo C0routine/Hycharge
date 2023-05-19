@@ -161,7 +161,7 @@ class FavoriteState extends State<Favorite> {
                   child: Icon(Icons.favorite_outline_rounded, size: 45.w, color: AppColor.enableColor),
                 ),
                 Text(
-                  '자주 방문하시는 충전소가 없습니다!\n충전소를 추가해주세요~',
+                  '자주 방문하시는 충전소가 없습니다.\n충전소를 추가해주세요.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),

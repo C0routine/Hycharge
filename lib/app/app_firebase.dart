@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:hycharge/firebase_options.dart';
-import 'package:hycharge/app/app_permission.dart';
 
 class AppFirebase {
   static final AppFirebase _appFirebase = AppFirebase._init();
@@ -21,8 +20,6 @@ class AppFirebase {
     FirebaseMessaging.onMessage.listen(_firebaseMessageForegroundHandler);
     await getFcmToken();
     await topicSubscribeSetting();
-
-    await AppPermission.getPushPermission();
   }
 
   /// Firebase Push Background Listener

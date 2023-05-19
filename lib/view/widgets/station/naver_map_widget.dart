@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_colors.dart';
+import 'package:hycharge/app/app_permission.dart';
 import 'package:hycharge/model/station/region_data.dart';
 import 'package:hycharge/model/station/station_data.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
@@ -128,6 +129,8 @@ class _NaverMapWidget extends State<NaverMapWidget> {
 
         // location Tracking 으로 인해 marker render 안되는 문제 있음(marker 보다 후순위).
         await mapVM.setLocationTracking();
+        await AppPermission.getPushPermission();
+
         mapVM.setMapReady(true);
       },
       onCameraIdle: () async {
