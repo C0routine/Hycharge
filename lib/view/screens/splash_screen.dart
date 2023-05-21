@@ -61,6 +61,7 @@ class _SplashScreen extends State<SplashScreen> with TickerProviderStateMixin {
             child: Lottie.asset(
               'assets/lottie/splash_screen.json',
               fit: BoxFit.fill,
+              width: double.infinity,
               height: double.infinity,
               controller: _controller,
               onLoaded: (LottieComposition composition) {

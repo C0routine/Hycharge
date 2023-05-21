@@ -1,7 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:hycharge/view/screens/root_screen.dart';
 import 'package:hycharge/view/screens/splash_screen.dart';
+
+/// GoRouter Page Transition Custom Animation
+GoRouterPageBuilder customGoRouterPageBuilder(Widget child) =>
+        (context, state) {
+      return CustomTransitionPage(
+        child: child,
+        key: state.pageKey,
+        transitionDuration: const Duration(milliseconds: 1600),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurveTween(curve: Curves.decelerate).animate(animation),
+            child: child,
+          );
+        },
+      );
+    };
 
 final GoRouter router = GoRouter(
   initialLocation: '/splash',
@@ -10,13 +27,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: 'splash',
       path: '/splash',
-      builder: (context, state) => const SplashScreen(),
-
+      pageBuilder: customGoRouterPageBuilder(const SplashScreen()),
     ),
     GoRoute(
       name: 'root',
       path: '/root',
-      builder: (context, state) => const RootScreen(),
+      pageBuilder: customGoRouterPageBuilder(const RootScreen()),
     ),
   ],
 );
