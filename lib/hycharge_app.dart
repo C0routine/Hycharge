@@ -45,6 +45,7 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
       splitScreenMode: true,
 
       builder: (context, child) {
+        AppStyle.safeArea = MediaQuery.of(context).viewPadding;
         return MaterialApp.router(
           // Performance Overlay
           // showPerformanceOverlay: true,
@@ -60,11 +61,7 @@ class _HyChargeApp extends State<HyChargeApp> with WidgetsBindingObserver {
           debugShowCheckedModeBanner: false,
 
           builder: (context, child) {
-            AppStyle.safeArea = MediaQuery.of(context).viewPadding;
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              child: child!,
-            );
+            return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), child: child!);
           },
         );
       },

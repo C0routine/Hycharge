@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 
 import 'package:hycharge/hycharge_app.dart';
 import 'package:hycharge/app/app_firebase.dart';
@@ -18,6 +19,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Firebase 초기화, 설정
   await AppFirebase().initFirebase();
+  // Naver map 초기화 (map widget 실행 전에만 초기화 하면 상관없음)
+  await NaverMapSdk.instance.initialize(clientId: dotenv.env['NAVER_MAP_CLIENT_ID']);
 
   runApp(
     // Provider 등록

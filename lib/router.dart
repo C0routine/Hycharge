@@ -7,7 +7,16 @@ final GoRouter router = GoRouter(
   initialLocation: '/splash',
   debugLogDiagnostics: true,
   routes: [
-    GoRoute(name: 'splash', path: '/splash', builder: (context, state) => const SplashScreen()),
-    GoRoute(name: 'root', path: '/root', builder: (context, state) => const RootScreen()),
+    GoRoute(
+      name: 'splash',
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+
+    ),
+    GoRoute(
+      name: 'root',
+      path: '/root',
+      builder: (context, state) => const RootScreen(),
+    ),
   ],
 );

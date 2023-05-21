@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hycharge/app/app_colors.dart';
-import 'package:hycharge/app/app_permission.dart';
 import 'package:hycharge/model/station/region_data.dart';
 import 'package:hycharge/model/station/station_data.dart';
 import 'package:hycharge/view_model/dark_theme.dart';
@@ -107,7 +106,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
         // 최소 zoom
         minZoom: 6,
         // Symbol Scale
-        symbolScale: 1.16,
+        symbolScale: 1,
         // 실내 지도 활성화
         indoorEnable: true,
         // 축적 바
@@ -129,7 +128,6 @@ class _NaverMapWidget extends State<NaverMapWidget> {
 
         // location Tracking 으로 인해 marker render 안되는 문제 있음(marker 보다 후순위).
         await mapVM.setLocationTracking();
-        await AppPermission.getPushPermission();
 
         mapVM.setMapReady(true);
       },

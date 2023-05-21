@@ -18,8 +18,6 @@ class AppFirebase {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen(_firebaseMessageForegroundHandler);
-    await getFcmToken();
-    await topicSubscribeSetting();
   }
 
   /// Firebase Push Background Listener
@@ -47,14 +45,14 @@ class AppFirebase {
   }
 
   /// Get FCM Token
-  Future<String?> getFcmToken() async {
+  static Future<String?> getFcmToken() async {
     String? fcmToken = await FirebaseMessaging.instance.getToken();
     print('fcmToken : $fcmToken');
     return fcmToken;
   }
 
   /// Topic 구독
-  Future<void> topicSubscribeSetting() async {
+  static Future<void> topicSubscribeSetting() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
     bool? notice = storage.getBool('push_notice');
 
