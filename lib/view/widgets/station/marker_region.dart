@@ -10,8 +10,8 @@ class MarkerRegion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 18.w,
-      height: 18.w,
+      width: 22.w,
+      height: 22.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: AppColor.white, width: 1.w),

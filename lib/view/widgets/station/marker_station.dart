@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:hycharge/app/app_colors.dart';
+import 'package:hycharge/app/app_style.dart';
 
 /// Station Marker Widget
 class MarkerStation extends StatelessWidget {
@@ -12,11 +13,11 @@ class MarkerStation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 15.w,
-      height: 9.w,
+      width: 20.w,
+      height: 11.w,
       decoration: BoxDecoration(
         border: Border.all(color: AppColor.white, width: 1.w),
-        borderRadius: BorderRadius.all(Radius.circular(8.w)),
+        borderRadius: AppStyle.borderRadius,
         color: color,
       ),
     );

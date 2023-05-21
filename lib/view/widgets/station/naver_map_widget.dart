@@ -28,7 +28,7 @@ class _NaverMapWidget extends State<NaverMapWidget> {
 
     /// Region Marker Setting
     Future<void> setRegionMarker() async {
-      final markerIcon = await NOverlayImage.fromWidget(widget: const MarkerRegion(), size: Size(18.w, 18.w), context: context);
+      final markerIcon = await NOverlayImage.fromWidget(widget: const MarkerRegion(), size: Size(22.w, 22.w), context: context);
 
       for (RegionData r in mapVM.regionList) {
         NMarker regionMarker = NMarker(
@@ -36,7 +36,10 @@ class _NaverMapWidget extends State<NaverMapWidget> {
             position: r.nLatLng,
             caption: NOverlayCaption(text: r.name, color: AppColor.white, haloColor: AppColor.grey),
             subCaption: NOverlayCaption(
-                text: r.totalPrice != 0 ? (r.totalPrice ~/ r.priceFew).toString() : '0', color: AppColor.white, haloColor: AppColor.grey),
+                textSize: 14.sp,
+                text: r.totalPrice != 0 ? (r.totalPrice ~/ r.priceFew).toString() : '0',
+                color: AppColor.white,
+                haloColor: AppColor.grey),
             captionAligns: [NAlign.center],
             icon: markerIcon)
           ..setOnTapListener((overlay) => mapVM.markerOnTap(r.nLatLng, false));
@@ -55,10 +58,10 @@ class _NaverMapWidget extends State<NaverMapWidget> {
     Future<void> setStationMarker() async {
       // MarkerStation load 함으로써 resource 최적화 (0.3초 단축 성공)
       final energy = {
-        'high': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.high), size: Size(15.w, 9.w), context: context),
-        'middle': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.middle), size: Size(15.w, 9.w), context: context),
-        'low': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.low), size: Size(15.w, 9.w), context: context),
-        'empty': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.grey), size: Size(15.w, 9.w), context: context),
+        'high': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.high), size: Size(20.w, 11.w), context: context),
+        'middle': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.middle), size: Size(20.w, 11.w), context: context),
+        'low': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.low), size: Size(20.w, 11.w), context: context),
+        'empty': await NOverlayImage.fromWidget(widget: const MarkerStation(AppColor.grey), size: Size(20.w, 11.w), context: context),
       };
 
       for (StationData stn in mapVM.stationList) {
@@ -74,7 +77,12 @@ class _NaverMapWidget extends State<NaverMapWidget> {
                       ? energy['middle']
                       : energy['high'],
           position: NLatLng(stn.latitude!, stn.longitude!),
-          caption: NOverlayCaption(text: '${stn.possibleVehicle ?? '??'}', color: AppColor.white, haloColor: AppColor.grey),
+          caption: NOverlayCaption(
+            textSize: 14.sp,
+            text: '${stn.possibleVehicle ?? '??'}',
+            color: AppColor.white,
+            haloColor: AppColor.grey,
+          ),
           captionAligns: [NAlign.center],
         )..setOnTapListener((overlay) => {
               mapVM.markerOnTap(NLatLng(stn.latitude!, stn.longitude!), true),
