@@ -117,7 +117,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '안내 받을 앱을 선택해주세요.',
+                      '해당 충전소까지 안내 받을 앱을 선택해주세요.',
                       style: Theme.of(context).textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
