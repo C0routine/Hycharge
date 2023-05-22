@@ -1,16 +1,17 @@
-# hycharge
+## 하이차지
 
-A new Flutter project.
+---
 
-## Getting Started
+- 전국 수소충전소 정보를 제공하는 앱 (Android, iOS 지원)
+- 수소충전소의 현재 대기차량, 충전가능 대수, 충전소 운영일자 등의 정보를 실시간으로 제공합니다.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+- 앱 구동화면
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![1](https://github.com/C0routine/Hycharge/assets/74998772/1be78474-04e2-4947-a9b2-66ee3b3a77d5)
+![2](https://github.com/C0routine/Hycharge/assets/74998772/960e89fa-a9bd-4d1c-8b90-0f09c1187741)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![3](https://github.com/C0routine/Hycharge/assets/74998772/f694463f-54d3-4054-b32d-e821b22ba46f)
+![4](https://github.com/C0routine/Hycharge/assets/74998772/61f40d73-0ca4-4970-955f-f8211578c22f)
+
