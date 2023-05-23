@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hycharge/model/services/station.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import 'package:hycharge/model/station/station_data.dart';
@@ -66,9 +64,7 @@ class BottomSheetVM extends ChangeNotifier {
   Future<void> directionStation(String appName) async {
     /// 충전소 길찾기 url scheme
     Future<void> directionUrlScheme(String url, String ios, String and) async {
-      try {
-        await launchUrlString(url);
-      } catch (err) {
+      if (!await launchUrlString(url, mode: LaunchMode.externalApplication)) {
         Platform.isIOS ? await launchUrlString(ios) : await launchUrlString(and);
       }
     }
@@ -92,7 +88,7 @@ class BottomSheetVM extends ChangeNotifier {
           'and': 'market://details?id=net.daum.android.map',
         },
         'tmap': {
-          'url': 'tmap://',
+          'url': 'tmap://open',
           'ios': 'http://itunes.apple.com/app/id431589174',
           'and': 'market://details?id=com.skt.tmap.ku',
         },
