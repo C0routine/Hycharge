@@ -92,7 +92,33 @@ class BottomSheetVM extends ChangeNotifier {
           'ios': 'http://itunes.apple.com/app/id431589174',
           'and': 'market://details?id=com.skt.tmap.ku',
         },
+        'apple': {
+          'url': 'http://maps.apple.com/?daddr=$stationName&dirflg=d&t=m',
+          'ios': 'http://itunes.apple.com/app/id915056765',
+          'and': '',
+        },
       };
+
+      if (Platform.isIOS && appName == 'apple') {
+        String address = '';
+        if ((stationData?.address ?? '').isNotEmpty) {
+          address = 'http://maps.apple.com/?daddr=${Uri.encodeComponent(stationData!.address!)}&dirflg=d&t=m';
+
+          if (!await launchUrlString(address, mode: LaunchMode.externalApplication)) {
+            await launchUrlString('http://itunes.apple.com/app/id915056765');
+          }
+          return;
+        }
+
+        if ((stationData?.oldAddress ?? '').isNotEmpty) {
+          address = 'http://maps.apple.com/?daddr=${Uri.encodeComponent(stationData!.oldAddress!)}&dirflg=d&t=m';
+          if (!await launchUrlString(address, mode: LaunchMode.externalApplication)) {
+            await launchUrlString('http://itunes.apple.com/app/id915056765');
+          }
+          return;
+        }
+        return;
+      }
 
       await directionUrlScheme(urlScheme[appName]!['url']!, urlScheme[appName]!['ios']!, urlScheme[appName]!['and']!);
     }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +46,19 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
       return Material(
         shape: const CircleBorder(),
         child: InkWell(
-          onTap: () => isFavorite ? vm.favoriteRemove() : vm.favoriteAdd(),
+          onTap: () {
+            if (isFavorite) {
+              vm.favoriteRemove();
+            } else {
+              vm.favoriteAdd();
+
+              const snackBar = SnackBar(
+                content: Text('즐겨찾기에 추가 되었습니다.'),
+                duration: Duration(milliseconds: 800),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          },
           customBorder: const CircleBorder(),
           child: Container(
             decoration: const BoxDecoration(
@@ -88,13 +102,15 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
               ? 'tmap'
               : appName == '네이버맵'
                   ? 'naver'
-                  : 'kakao'),
+                  : appName == '카카오맵'
+                      ? 'kakao'
+                      : 'apple'),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ClipRRect(
                 borderRadius: AppStyle.borderRadius,
-                child: Image.asset(assets, width: 80.w, height: 80.w),
+                child: Image.asset(assets, width: 55.w, height: 55.w),
               ),
               Padding(padding: AppStyle.gapTitle, child: Text(appName, style: Theme.of(context).textTheme.bodyMedium)),
             ],
@@ -117,7 +133,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      '해당 충전소까지 안내 받을 앱을 선택해주세요.',
+                      '해당 충전소까지\n안내 받을 앱을 선택해주세요.',
                       style: Theme.of(context).textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -129,6 +145,7 @@ class _BottomSheetHeaderWidget extends State<BottomSheetHeaderWidget> {
                           directionApp('assets/icon/tmap_icon.png', '티맵'),
                           directionApp('assets/icon/naver_icon.png', '네이버맵'),
                           directionApp('assets/icon/kakao_icon.png', '카카오맵'),
+                          if (Platform.isIOS) directionApp('assets/icon/apple_icon.png', '애플맵'),
                         ],
                       ),
                     ),
