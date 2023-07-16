@@ -33,7 +33,7 @@ class _AppVersion extends State<AppVersion> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text('현재 앱 버전 : $appVersion', style: Theme.of(context).textTheme.labelMedium),
-              Text('최신 앱 버전 : $appVersion', style: Theme.of(context).textTheme.labelMedium),
+              // Text('최신 앱 버전 : $appVersion', style: Theme.of(context).textTheme.labelMedium),
             ],
           )
         ],
