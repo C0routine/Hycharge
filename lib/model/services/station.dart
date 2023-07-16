@@ -35,8 +35,11 @@ class Station {
       return false;
     }
 
-    final infoResponse = await Network.dio.get('/chrstnList/operationInfo');
-    final detailsResponse = await Network.dio.get('/chrstnList/currentInfo');
+    final infoResponse = await Network.dio.get('chrstnList/operationInfo');
+    final detailsResponse = await Network.dio.get('chrstnList/currentInfo');
+
+    // final infoResponse = await Network.dio.get('http://el.h2nbiz.or.kr/api/chrstnList/operationInfo');
+    // final detailsResponse = await Network.dio.get('http://el.h2nbiz.or.kr/api/chrstnList/currentInfo');
 
     // 충전소 정보
     List<StationData> infoList = [];
